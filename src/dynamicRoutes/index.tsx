@@ -6,6 +6,7 @@ const DynamicRoute = () => {
     { path: '/dashboard', element: <compImports.dashboard /> },
     { path: '/login', element: <compImports.login /> },
     { path: '/signup', element: <compImports.signup /> },
+    { path: '/pos', element: <compImports.signup /> },
 
   ];
 };

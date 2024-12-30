@@ -69,7 +69,7 @@ export function RatingChart() {
   return (
     <div className="bg-white p-6 rounded-lg">
       <h3 className="font-semibold mb-4">Website Overview Rating</h3>
-      <div className="h-[250px] relative">
+      <div className="h-[130px] relative">
         <Line data={data} options={options} />
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="text-center bg-white/90 p-2 rounded-lg shadow-sm">
@@ -108,7 +108,7 @@ export function SessionsChart() {
   return (
     <div className="bg-white p-6 rounded-lg ">
       <h3 className="font-semibold mb-4 ">Mobile Sessions</h3>
-      <div className="h-[250px] relative">
+      <div className="h-[145px] relative">
         <Doughnut data={data} options={options} />
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="text-center">

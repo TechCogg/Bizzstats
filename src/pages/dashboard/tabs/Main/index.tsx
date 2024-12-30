@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import "@/styles/globals.css"
 export default function DashboardContent() {
   return (
-    <div className="p-0 sm:p-4 md:p-6 lg:p-8">
+    <div className="p-0 sm:p-4 md:p-6 lg:p-1">
       {/* Dashboard Header */}
    
 
@@ -35,14 +35,14 @@ export default function DashboardContent() {
           {/* Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { title: "Net", value: "$20.00", icon: DollarSign, className: "bg-pink-100" },
-              { title: "Total Sale", value: "$30.00", icon: ShoppingCart, className: "bg-purple-100" },
-              { title: "Total Sell Return", value: "$210.00", icon: ArrowLeftRight, className: "bg-blue-100" },
-              { title: "Invoice Due", value: "$120.00", icon: FileText, className: "bg-emerald-100" },
-              { title: "Total Purchase", value: "$123.00", icon: ShoppingCart, className: "bg-orange-100" },
-              { title: "Purchase Due", value: "$122.00", icon: FileText, className: "bg-yellow-100" },
-              { title: "Total Purchase Return", value: "$234.00", icon: ArrowLeftRight, className: "bg-green-100" },
-              { title: "Expense", value: "$1234.00", icon: FileText, className: "bg-violet-100" },
+              { title: "Net", value: "$20.00", icon: DollarSign, className: "bg-pink-300" },
+              { title: "Total Sale", value: "$30.00", icon: ShoppingCart, className: "bg-purple-300" },
+              { title: "Total Sell Return", value: "$210.00", icon: ArrowLeftRight, className: "bg-blue-300" },
+              { title: "Invoice Due", value: "$120.00", icon: FileText, className: "bg-emerald-300" },
+              { title: "Total Purchase", value: "$123.00", icon: ShoppingCart, className: "bg-orange-300" },
+              { title: "Purchase Due", value: "$122.00", icon: FileText, className: "bg-yellow-300" },
+              { title: "Total Purchase Return", value: "$234.00", icon: ArrowLeftRight, className: "bg-green-300" },
+              { title: "Expense", value: "$1234.00", icon: FileText, className: "bg-violet-300" },
             ].map((metric, index) => (
               <MetricCard
                 key={index}

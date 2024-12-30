@@ -33,7 +33,7 @@ const activities = [
 
 export function ActivityFeed() {
   return (
-    <div className="bg-white p-6 rounded-lg  ">
+    <div className="bg-white p-3 rounded-lg  ">
       <h3 className="font-semibold mb-4">Recent Activities</h3>
       <div className="space-y-4">
         {activities.map((activity, i) => (
