@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -23,17 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import {
-  ChevronDown,
-  FileSpreadsheet,
-  FileText,
-  Printer,
-  Columns,
-  FileIcon as FilePdf,
-  Plus,
-  MoreHorizontal,
-} from "lucide-react";
+import { ChevronDown, FileSpreadsheet, FileText, Printer, Columns, FileIcon as FilePdf, Plus } from 'lucide-react';
+import Paginate from "@/components/common-components/Paginate";
 
 interface Purchase {
   date: string;
@@ -48,9 +39,14 @@ interface Purchase {
 }
 
 export default function Purchases() {
-  const [entries, setEntries] = useState("25");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPurchases, setFilteredPurchases] = useState<Purchase[]>([]);
 
+
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   const purchases: Purchase[] = [
     {
       date: "11/04/2024 12:31",
@@ -74,7 +70,25 @@ export default function Purchases() {
       paymentDue: 0.0,
       addedBy: "Purchase: $0.00",
     },
+    // Add more mock data here to test pagination
   ];
+
+  useEffect(() => {
+    const filtered = purchases.filter((purchase) =>
+      Object.values(purchase).some((value) =>
+        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+    setFilteredPurchases(filtered);
+  }, [searchQuery]);
+
+  const handlePageChange = (selectedPage: number) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const indexOfLastItem = currentPage * pageSize;
+  const indexOfFirstItem = indexOfLastItem - pageSize;
+  const currentItems = filteredPurchases.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="space-y-6">
@@ -96,7 +110,7 @@ export default function Purchases() {
           <div className="flex flex-wrap gap-4 mb-6 items-center">
             <div className="flex items-center gap-2">
               <span className="text-sm">Show</span>
-              <Select value={entries} onValueChange={setEntries}>
+              <Select value={pageSize.toString()} onValueChange={(value) => setPageSize(Number(value))}>
                 <SelectTrigger className="w-[70px]">
                   <SelectValue />
                 </SelectTrigger>
@@ -164,7 +178,7 @@ export default function Purchases() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {purchases.map((purchase, index) => (
+                {currentItems.map((purchase, index) => (
                   <TableRow key={index}>
                     {Object.values(purchase).map((value, i) => (
                       <TableCell key={i} className="px-4 py-2 whitespace-normal break-words">
@@ -194,21 +208,13 @@ export default function Purchases() {
             </Table>
           </div>
 
-          {/* Footer */}
-          <div className="mt-4 flex flex-wrap justify-between items-center">
-            <div className="text-sm text-gray-500">Showing 1 To 25 Of 109 Entries</div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled>
-                Previous
-              </Button>
-              <Button variant="outline" size="sm" className="bg-blue-600 text-white">
-                1
-              </Button>
-              <Button variant="outline" size="sm">
-                Next
-              </Button>
-            </div>
-          </div>
+          {/* Pagination */}
+          <Paginate
+            totalCount={filteredPurchases.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
 
           {/* Totals */}
           <div className="mt-4 p-4 bg-gray-50 rounded-lg">
@@ -226,3 +232,4 @@ export default function Purchases() {
     </div>
   );
 }
+

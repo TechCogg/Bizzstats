@@ -1,105 +1,182 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent } from "@/components/ui/card"
-import { FileDown, FileSpreadsheet, Printer, Columns, FileText, Plus, ArrowUpDown } from 'lucide-react'
-import Image from 'next/image'
-import Bizzstat from '../../../../../../public/bizzlogo.png';
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  FileDown,
+  FileSpreadsheet,
+  Printer,
+  Columns,
+  FileText,
+  Plus,
+  ArrowUpDown,
+} from "lucide-react";
+import Image from "next/image";
+import Bizzstat from "../../../../../../public/bizzlogo.png";
+import Paginate from "@/components/common-components/Paginate";
 
 // Mock data
 const mockProducts = [
-  { id: '1', name: 'White Mutton', location: 'Candies Restaurant', purchasePrice: 5.00, sellingPrice: 10.00, currentStock: 50, type: 'Single', category: 'Mutton' },
-  { id: '2', name: 'Chicken Breast', location: 'Candies Restaurant', purchasePrice: 3.00, sellingPrice: 7.00, currentStock: 100, type: 'Single', category: 'Chicken' },
-  { id: '3', name: 'Beef Steak', location: 'Steakhouse', purchasePrice: 8.00, sellingPrice: 20.00, currentStock: 30, type: 'Single', category: 'Beef' },
-  { id: '4', name: 'Pork Chops', location: 'Butcher Shop', purchasePrice: 4.00, sellingPrice: 9.00, currentStock: 75, type: 'Single', category: 'Pork' },
-  { id: '5', name: 'Lamb Rack', location: 'Fine Dining', purchasePrice: 12.00, sellingPrice: 30.00, currentStock: 20, type: 'Single', category: 'Lamb' },
-]
+  {
+    id: "1",
+    name: "White Mutton",
+    location: "Candies Restaurant",
+    purchasePrice: 5.0,
+    sellingPrice: 10.0,
+    currentStock: 50,
+    type: "Single",
+    category: "Mutton",
+  },
+  {
+    id: "2",
+    name: "Chicken Breast",
+    location: "Candies Restaurant",
+    purchasePrice: 3.0,
+    sellingPrice: 7.0,
+    currentStock: 100,
+    type: "Single",
+    category: "Chicken",
+  },
+  {
+    id: "3",
+    name: "Beef Steak",
+    location: "Steakhouse",
+    purchasePrice: 8.0,
+    sellingPrice: 20.0,
+    currentStock: 30,
+    type: "Single",
+    category: "Beef",
+  },
+  {
+    id: "4",
+    name: "Pork Chops",
+    location: "Butcher Shop",
+    purchasePrice: 4.0,
+    sellingPrice: 9.0,
+    currentStock: 75,
+    type: "Single",
+    category: "Pork",
+  },
+  {
+    id: "5",
+    name: "Lamb Rack",
+    location: "Fine Dining",
+    purchasePrice: 12.0,
+    sellingPrice: 30.0,
+    currentStock: 20,
+    type: "Single",
+    category: "Lamb",
+  },
+];
 
-const allCategories = ['All', 'Mutton', 'Chicken', 'Beef', 'Pork', 'Lamb']
-const allLocations = ['All', 'Candies Restaurant', 'Steakhouse', 'Butcher Shop', 'Fine Dining']
+const allCategories = ["All", "Mutton", "Chicken", "Beef", "Pork", "Lamb"];
+const allLocations = [
+  "All",
+  "Candies Restaurant",
+  "Steakhouse",
+  "Butcher Shop",
+  "Fine Dining",
+];
 
-export  default function Products() {
-  const [products, setProducts] = useState(mockProducts)
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+export default function Products() {
+  const [products, setProducts] = useState(mockProducts);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [filters, setFilters] = useState({
-    name: 'All',
-    category: 'All',
-    unit: 'All',
-    tax: 'All',
-    brand: 'All',
-    location: 'All',
-    notForSelling: false
-  })
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(25)
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-  const [showLocationModal, setShowLocationModal] = useState(false)
-  const [modalAction, setModalAction] = useState<'add' | 'remove' | null>(null)
+    name: "All",
+    category: "All",
+    unit: "All",
+    tax: "All",
+    brand: "All",
+    location: "All",
+    notForSelling: false,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [modalAction, setModalAction] = useState<"add" | "remove" | null>(null);
 
   useEffect(() => {
     // Apply filters
-    let filteredProducts = mockProducts
-    if (filters.category !== 'All') {
-      filteredProducts = filteredProducts.filter(p => p.category === filters.category)
+    let filteredProducts = mockProducts;
+    if (filters.category !== "All") {
+      filteredProducts = filteredProducts.filter(
+        (p) => p.category === filters.category
+      );
     }
-    if (filters.location !== 'All') {
-      filteredProducts = filteredProducts.filter(p => p.location === filters.location)
+    if (filters.location !== "All") {
+      filteredProducts = filteredProducts.filter(
+        (p) => p.location === filters.location
+      );
     }
     // Add more filter logic here as needed
-    setProducts(filteredProducts)
-  }, [filters])
+    setProducts(filteredProducts);
+  }, [filters]);
 
   const handleFilterChange = (key: string, value: string | boolean) => {
-    setFilters(prev => ({ ...prev, [key]: value }))
-  }
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
 
   const toggleSelectAll = () => {
     if (selectedItems.length === products.length) {
-      setSelectedItems([])
+      setSelectedItems([]);
     } else {
-      setSelectedItems(products.map(p => p.id))
+      setSelectedItems(products.map((p) => p.id));
     }
-  }
+  };
 
   const toggleSelectItem = (id: string) => {
-    setSelectedItems(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-    )
-  }
+    setSelectedItems((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
 
   const handleDeleteSelected = () => {
     if (selectedItems.length > 0) {
-      setShowDeleteConfirmation(true)
+      setShowDeleteConfirmation(true);
     }
-  }
+  };
 
   const confirmDelete = () => {
-    setProducts(prev => prev.filter(p => !selectedItems.includes(p.id)))
-    setSelectedItems([])
-    setShowDeleteConfirmation(false)
-  }
+    setProducts((prev) => prev.filter((p) => !selectedItems.includes(p.id)));
+    setSelectedItems([]);
+    setShowDeleteConfirmation(false);
+  };
 
-  const handleLocationAction = (action: 'add' | 'remove') => {
+  const handleLocationAction = (action: "add" | "remove") => {
     if (selectedItems.length > 0) {
-      setModalAction(action)
-      setShowLocationModal(true)
+      setModalAction(action);
+      setShowLocationModal(true);
     }
-  }
+  };
 
   const handleInfoClick = () => {
-    alert('This section allows you to manage your product inventory.')
-  }
+    alert("This section allows you to manage your product inventory.");
+  };
 
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem)
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="space-y-6">
@@ -110,10 +187,12 @@ export  default function Products() {
       </div>
 
       {/* Filters Section */}
-      <Card className="border rounded-lg bg-white">
+      <Card
+        className="border rounded-lg bg-white  border-gray-200 overflow-hidden"
+        style={{ borderTop: "4px solid #2563eb" }}
+      >
         <CardContent className="pt-6">
           <div className="mb-4">
-            
             <h2 className="text-blue-600 text-sm font-medium mb-4">Filters</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Product Name Dropdown */}
@@ -127,7 +206,10 @@ export  default function Products() {
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto">
-                    <SelectItem value="All" className="hover:bg-gray-100 p-2 rounded">
+                    <SelectItem
+                      value="All"
+                      className="hover:bg-gray-100 p-2 rounded"
+                    >
                       All
                     </SelectItem>
                     {products.map((p) => (
@@ -148,7 +230,9 @@ export  default function Products() {
                 <label className="text-sm font-medium">Category:</label>
                 <Select
                   value={filters.category}
-                  onValueChange={(value) => handleFilterChange("category", value)}
+                  onValueChange={(value) =>
+                    handleFilterChange("category", value)
+                  }
                 >
                   <SelectTrigger className="bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <SelectValue placeholder="All" />
@@ -178,7 +262,10 @@ export  default function Products() {
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto">
-                    <SelectItem value="All" className="hover:bg-gray-100 p-2 rounded">
+                    <SelectItem
+                      value="All"
+                      className="hover:bg-gray-100 p-2 rounded"
+                    >
                       All
                     </SelectItem>
                   </SelectContent>
@@ -196,7 +283,10 @@ export  default function Products() {
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto">
-                    <SelectItem value="All" className="hover:bg-gray-100 p-2 rounded">
+                    <SelectItem
+                      value="All"
+                      className="hover:bg-gray-100 p-2 rounded"
+                    >
                       All
                     </SelectItem>
                   </SelectContent>
@@ -214,7 +304,10 @@ export  default function Products() {
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto">
-                    <SelectItem value="All" className="hover:bg-gray-100 p-2 rounded">
+                    <SelectItem
+                      value="All"
+                      className="hover:bg-gray-100 p-2 rounded"
+                    >
                       All
                     </SelectItem>
                   </SelectContent>
@@ -223,10 +316,14 @@ export  default function Products() {
 
               {/* Business Location Dropdown */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Business Location:</label>
+                <label className="text-sm font-medium">
+                  Business Location:
+                </label>
                 <Select
                   value={filters.location}
-                  onValueChange={(value) => handleFilterChange("location", value)}
+                  onValueChange={(value) =>
+                    handleFilterChange("location", value)
+                  }
                 >
                   <SelectTrigger className="bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <SelectValue placeholder="All" />
@@ -264,10 +361,16 @@ export  default function Products() {
       </Card>
 
       {/* Table Actions */}
-      <div className='bg-white p-4 border rounded-lg'>
+      <div
+        className="bg-white p-4 border rounded-lg b  border-gray-200 overflow-hidden"
+        style={{ borderTop: "4px solid #2563eb" }}
+      >
         <div className="space-y-4">
           <div className="flex border-b">
-            <Button variant="ghost" className="border-b-2 border-blue-600 text-blue-600 rounded-none px-4 py-2">
+            <Button
+              variant="ghost"
+              className="border-b-2 border-blue-600 text-blue-600 rounded-none px-4 py-2"
+            >
               Accounts
             </Button>
             <Button variant="ghost" className="rounded-none px-4 py-2">
@@ -277,10 +380,17 @@ export  default function Products() {
 
           <div className="flex justify-between items-center">
             <div className="flex gap-2">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
                 <Plus className="h-4 w-4 mr-2" /> Add
               </Button>
-              <Button size="sm" variant="outline" className="text-white  bg-green-600">
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-white  bg-green-600"
+              >
                 <FileDown className="h-4 w-4 mr-2" /> Download template file
               </Button>
             </div>
@@ -311,7 +421,7 @@ export  default function Products() {
               <SelectTrigger className="w-[70px]">
                 <SelectValue placeholder="25" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-black">
                 <SelectItem value="25">25</SelectItem>
                 <SelectItem value="50">50</SelectItem>
                 <SelectItem value="100">100</SelectItem>
@@ -319,7 +429,6 @@ export  default function Products() {
             </Select>
             <span className="text-sm">entries</span>
           </div>
-
 
           <div className="border rounded-lg bg-white">
             <Table>
@@ -380,19 +489,19 @@ export  default function Products() {
             </button>
             <button
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
-              onClick={() => handleLocationAction('add')}
+              onClick={() => handleLocationAction("add")}
             >
               Add To Location
             </button>
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-              onClick={() => handleLocationAction('remove')}
+              onClick={() => handleLocationAction("remove")}
             >
               Remove From Location
             </button>
             <button
               className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded"
-              onClick={() => handleLocationAction('remove')}
+              onClick={() => handleLocationAction("remove")}
             >
               Remove From Location
             </button>
@@ -404,39 +513,12 @@ export  default function Products() {
             </button>
           </div>
 
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              Showing 1 To 25 Of 109 Entries
-            </p>
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-blue-600 text-white hover:bg-blue-700"
-                  onClick={() => paginate(1)}
-                >
-                  1
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={indexOfLastItem >= products.length}
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
-          </div>
+          <Paginate
+            totalCount={products.length}
+            pageSize={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </div>
       {showDeleteConfirmation && (
@@ -445,8 +527,12 @@ export  default function Products() {
             <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
             <p>Are you sure you want to delete the selected items?</p>
             <div className="mt-4 flex justify-end space-x-2">
-              <Button onClick={() => setShowDeleteConfirmation(false)}>Cancel</Button>
-              <Button onClick={confirmDelete} className="bg-red-500 text-white">Delete</Button>
+              <Button onClick={() => setShowDeleteConfirmation(false)}>
+                Cancel
+              </Button>
+              <Button onClick={confirmDelete} className="bg-red-500 text-white">
+                Delete
+              </Button>
             </div>
           </div>
         </div>
@@ -456,29 +542,39 @@ export  default function Products() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg">
             <h2 className="text-xl font-bold mb-4">
-              {modalAction === 'add' ? 'Add to Location' : 'Remove from Location'}
+              {modalAction === "add"
+                ? "Add to Location"
+                : "Remove from Location"}
             </h2>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select a location" />
               </SelectTrigger>
               <SelectContent>
-                {allLocations.map(location => (
-                  <SelectItem key={location} value={location}>{location}</SelectItem>
+                {allLocations.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <div className="mt-4 flex justify-end space-x-2">
-              <Button onClick={() => setShowLocationModal(false)}>Cancel</Button>
-              <Button onClick={() => {
-                // Implement add/remove logic here
-                setShowLocationModal(false)
-              }} className="bg-blue-500 text-white">Confirm</Button>
+              <Button onClick={() => setShowLocationModal(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  // Implement add/remove logic here
+                  setShowLocationModal(false);
+                }}
+                className="bg-blue-500 text-white"
+              >
+                Confirm
+              </Button>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
-

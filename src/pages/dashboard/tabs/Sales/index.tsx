@@ -76,6 +76,7 @@ export default function ImportProducts() {
           </form>
         </div>
       </div>
+      
 
       {/* Instructions Section */}
       <div className="bg-white rounded-lg border border-gray-200" style={{ borderTop: '4px solid #2563eb' }}>
