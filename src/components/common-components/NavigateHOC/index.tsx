@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { INavigate, State, Url } from 'types/index';
+import { INavigate, State, Url } from '@/types/index';
 
 interface WithNavigationProps {
   navigate?: INavigate;
   children?: ReactNode;
 }
+
 const withNavigation = <P extends object>(
   WrappedComponent: React.ComponentType<P & WithNavigationProps>,
 ) => {
@@ -18,13 +19,11 @@ const withNavigation = <P extends object>(
       } else if (typeof url === 'string') {
         // Handle navigating to a specific URL with state
         navigate(url, { state });
-      } else if (typeof url === 'object' && 'url' in url) {
-        // Ensure that url has a 'url' property
-        navigate(url.url);
+      } else if (typeof url === 'object' && 'url' in url && url.url) {
+        // Ensure that url has a 'url' property and it is defined
+        navigate(url.url, { state });
       }
     };
     return <WrappedComponent {...props} navigate={redirect} />;
   };
 };
-
-export default withNavigation;
