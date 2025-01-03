@@ -2,6 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Bizzstat from "../../../../../../../public/bizzlogo.png";
+import { useEffect } from "react";
 
 interface ProductTableProps {
   currentItems: any[];
@@ -10,8 +11,10 @@ interface ProductTableProps {
   toggleSelectItem: (id: string) => void;
 }
 
+
 export function ProductTable({ currentItems, selectedItems, toggleSelectAll, toggleSelectItem }: ProductTableProps) {
   return (
+    
     <Table>
       <TableHeader>
         <TableRow>
