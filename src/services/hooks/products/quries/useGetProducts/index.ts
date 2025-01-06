@@ -1,6 +1,6 @@
 import { createQueryFn, useFetchQuery } from '@/services/hooks/query';
 import { GET_PRODUCTS_LIST } from '@/services/hooks/urls/products';
-import { IProductsListRes } from './interface'; // Adjust path if necessary
+import { IProductsListRes } from './interface'; 
 
 export const GetProductsList = () => {
   const {

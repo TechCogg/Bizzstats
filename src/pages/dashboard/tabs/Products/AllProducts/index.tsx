@@ -5,80 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Paginate from "@/components/common-components/Paginate";
 import { ProductFilters } from "./components/ProductFilters";
-import { TableActions } from "./components/TableActions";
+import { TableActions } from "./components/TableAction";
 import { ProductTable } from "./components/ProductTable";
 import { DeleteConfirmationModal } from "./components/DeleteConfirmationModal";
 import { LocationModal } from "./components/LocationModal";
-
-type Product = {
-  id: string;
-  name: string;
-  location: string;
-  purchasePrice: number;
-  sellingPrice: number;
-  currentStock: number;
-  type: string;
-  category: string;
-};
-
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    name: "Mutton Chops",
-    location: "Candies Restaurant",
-    purchasePrice: 10,
-    sellingPrice: 20,
-    currentStock: 100,
-    type: "Meat",
-    category: "Mutton",
-  },
-  {
-    id: "2",
-    name: "Chicken Breast",
-    location: "Steakhouse",
-    purchasePrice: 8,
-    sellingPrice: 15,
-    currentStock: 150,
-    type: "Meat",
-    category: "Chicken",
-  },
-  {
-    id: "3",
-    name: "Beef Steak",
-    location: "Butcher Shop",
-    purchasePrice: 15,
-    sellingPrice: 30,
-    currentStock: 80,
-    type: "Meat",
-    category: "Beef",
-  },
-  {
-    id: "4",
-    name: "Pork Chops",
-    location: "Fine Dining",
-    purchasePrice: 12,
-    sellingPrice: 25,
-    currentStock: 120,
-    type: "Meat",
-    category: "Pork",
-  },
-  {
-    id: "5",
-    name: "Lamb Chops",
-    location: "Candies Restaurant",
-    purchasePrice: 18,
-    sellingPrice: 35,
-    currentStock: 70,
-    type: "Meat",
-    category: "Lamb",
-  },
-];
+import { GetProductsList } from "@/services/hooks/products";
+import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
 
 const allCategories = ["All", "Mutton", "Chicken", "Beef", "Pork", "Lamb"];
 const allLocations = ["All", "Candies Restaurant", "Steakhouse", "Butcher Shop", "Fine Dining"];
 
 export default function Products() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const { data: productsData } = GetProductsList();
+  const [products, setProducts] = useState<ItemProducts[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [filters, setFilters] = useState({
     name: "All",
@@ -95,14 +34,21 @@ export default function Products() {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [modalAction, setModalAction] = useState<"add" | "remove" | null>(null);
 
+  
   useEffect(() => {
-    // Simulating an API call to fetch products
-    setProducts(mockProducts);
-  }, []);
+    if (productsData) {
+      const initializedProducts = productsData.map((product: ItemProducts) => ({
+        ...product,   
+      }));
+      setProducts(initializedProducts);
+    }
+  }, [productsData]);
+
+
 
   useEffect(() => {
     // Apply filters
-    let filteredProducts = mockProducts;
+    let filteredProducts = products;
     if (filters.category !== "All") {
       filteredProducts = filteredProducts.filter((p) => p.category === filters.category);
     }
@@ -198,6 +144,7 @@ export default function Products() {
             toggleSelectAll={toggleSelectAll}
             toggleSelectItem={toggleSelectItem}
           />
+          
         </div>
         <div className="flex justify-end space-x-2 p-4">
           <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onClick={handleDeleteSelected}>

@@ -8,5 +8,5 @@ export default function HomePage() {
         router.push('/dashboard'); // Redirect to dashboard
     }, [router]);
 
-    return null; // Render nothing while redirecting
+    return null;
 }

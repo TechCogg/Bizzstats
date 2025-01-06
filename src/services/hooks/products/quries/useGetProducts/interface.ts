@@ -1,4 +1,7 @@
-export interface ItemProduct {
+export interface IProductsListRes {
+  data: ItemProducts[]; 
+}
+export interface ItemProducts {
     id: string
     image: string
     name: string
@@ -9,9 +12,6 @@ export interface ItemProduct {
     type: string
     category: string
   }
+
   
-  export interface IProductsListRes {
-    data: [];
-  }
-  
-  
+  export interface IProductsListRes extends Array<ItemProducts> {}

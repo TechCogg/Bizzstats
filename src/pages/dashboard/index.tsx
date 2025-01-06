@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+
 import { useRouter } from "next/router";
 import { Home, Users, Store, ShoppingCart, CreditCard, ClipboardList, Settings, X, LogOut, ChevronRight, Box, ArrowLeftRight, FileText, BarChart, Factory, Bell, FileSpreadsheet, Calendar, Coffee, Menu } from 'lucide-react';
 import Image from "next/image";

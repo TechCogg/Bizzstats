@@ -1,20 +1,29 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
-import Bizzstat from "../../../../../../../public/bizzlogo.png";
-import { useEffect } from "react";
+import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
 
 interface ProductTableProps {
-  currentItems: any[];
+  currentItems: ItemProducts[]; // Using your existing ItemProducts interface
   selectedItems: string[];
   toggleSelectAll: () => void;
   toggleSelectItem: (id: string) => void;
 }
 
-
-export function ProductTable({ currentItems, selectedItems, toggleSelectAll, toggleSelectItem }: ProductTableProps) {
+export function ProductTable({
+  currentItems,
+  selectedItems,
+  toggleSelectAll,
+  toggleSelectItem,
+}: ProductTableProps) {
   return (
-    
     <Table>
       <TableHeader>
         <TableRow>
@@ -45,7 +54,7 @@ export function ProductTable({ currentItems, selectedItems, toggleSelectAll, tog
             </TableCell>
             <TableCell>
               <Image
-                src={Bizzstat}
+                src={product.image || "/default-image.png"}
                 alt={product.name}
                 width={40}
                 height={40}
@@ -54,9 +63,9 @@ export function ProductTable({ currentItems, selectedItems, toggleSelectAll, tog
             </TableCell>
             <TableCell>{product.name}</TableCell>
             <TableCell>{product.location}</TableCell>
-            <TableCell>$ {product.purchasePrice.toFixed(2)}</TableCell>
+            <TableCell>$ {product.unitPrice.toFixed(2)}</TableCell>
             <TableCell>$ {product.sellingPrice.toFixed(2)}</TableCell>
-            <TableCell>{product.currentStock}</TableCell>
+            <TableCell>{product.stock}</TableCell>
             <TableCell>{product.type}</TableCell>
             <TableCell>{product.category}</TableCell>
           </TableRow>
@@ -65,4 +74,3 @@ export function ProductTable({ currentItems, selectedItems, toggleSelectAll, tog
     </Table>
   );
 }
-
