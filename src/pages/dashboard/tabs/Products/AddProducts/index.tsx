@@ -3,17 +3,18 @@
 import * as React from "react";
 import { ProductInformationSection } from "./components/AddProductInfo";
 import { TaxInformationSection } from "./components/AddTaxInfo";
-
+import { ChangeEvent } from "react";
+import { useState } from "react";
 export default function AddProductForm() {
-  const [productImage, setProductImage] = React.useState<string | null>(null);
-  const [brochureFile, setBrochureFile] = React.useState<File | null>(null);
-  const [editorContent, setEditorContent] = React.useState<string>("");
+  const [productImage, setProductImage] = useState<string | null>(null);
+  const [brochureFile, setBrochureFile] = useState<File | null>(null);
+  const [editorContent, setEditorContent] = useState<string>("");
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -24,7 +25,7 @@ export default function AddProductForm() {
     }
   };
 
-  const handleBrochureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBrochureUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setBrochureFile(file);

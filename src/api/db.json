@@ -1,61 +1,39 @@
-
 {
-    "products": [
-      {
-        "id": "1",
-        "image": "https://via.placeholder.com/150", 
-        "name": "Mutton Chops",
-        "location": "Candies Restaurant",
-        "unitPrice": 10,
-        "sellingPrice": 20,
-        "stock": 100,
-        "type": "Meat",
-        "category": "Mutton"
-      },
-      {
-        "id": "2",
-        "image": "https://via.placeholder.com/150",
-        "name": "Chicken Breast",
-        "location": "Steakhouse",
-        "unitPrice": 8,
-        "sellingPrice": 15,
-        "stock": 150,
-        "type": "Meat",
-        "category": "Chicken"
-      },
-      {
-        "id": "3",
-        "image": "https://via.placeholder.com/150",
-        "name": "Beef Steak",
-        "location": "Butcher Shop",
-        "unitPrice": 15,
-        "sellingPrice": 30,
-        "stock": 80,
-        "type": "Meat",
-        "category": "Beef"
-      },
-      {
-        "id": "3",
-        "image": "https://via.placeholder.com/150",
-        "name": "Beef Steak",
-        "location": "Butcher Shop",
-        "unitPrice": 15,
-        "sellingPrice": 30,
-        "stock": 80,
-        "type": "Meat",
-        "category": "Beef"
-      },
-      {
-        "id": "3",
-        "image": "https://via.placeholder.com/150",
-        "name": "Beef Steak",
-        "location": "Butcher Shop",
-        "unitPrice": 15,
-        "sellingPrice": 30,
-        "stock": 80,
-        "type": "Meat",
-        "category": "Beef"
-      }
-    ]
-  }
+  "products": [
+    {
+      "id": "1",
+      "image": "https://via.placeholder.com/150",
+      "name": "Mutton Chops",
+      "location": "Candies Restaurant",
+      "unitPrice": 10,
+      "sellingPrice": 20,
+      "stock": 100,
+      "type": "Meat",
+      "category": "Mutton"
+    },
+    {
+      "id": "2",
+      "image": "https://via.placeholder.com/150",
+      "name": "Chicken Breast",
+      "location": "Steakhouse",
+      "unitPrice": 8,
+      "sellingPrice": 15,
+      "stock": 150,
+      "type": "Meat",
+      "category": "Chicken"
+    },
+    {
+      "id": "3",
+      "image": "https://via.placeholder.com/150",
+      "name": "Beef Steak",
+      "location": "Butcher Shop",
+      "unitPrice": 15,
+      "sellingPrice": 30,
+      "stock": 80,
+      "type": "Meat",
+      "category": "Beef"
+    }
   
+   
+  ]
+}

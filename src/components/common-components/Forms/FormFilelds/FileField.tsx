@@ -1,6 +1,7 @@
 import { useField } from 'formik';
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { FC } from 'react';
 
 interface FileFieldProps {
   name: string;
@@ -8,7 +9,7 @@ interface FileFieldProps {
   accept?: string;
 }
 
-export const FileField: React.FC<FileFieldProps> = ({ name, label, accept }) => {
+export const FileField: FC<FileFieldProps> = ({ name, label, accept }) => {
   const [, , helpers] = useField(name);
 
   return (

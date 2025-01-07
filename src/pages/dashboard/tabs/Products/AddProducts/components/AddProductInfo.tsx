@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -11,13 +11,13 @@ import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import QuillEditor from "@/components/common-components/QuillEditor/QuillEditor";
-import { CommonForm, ProductFormData } from "@/components/common-components/Form/CommonForm";
+import { CommonForm, ProductFormData } from "@/components/common-components/Forms/CommonForm";
 
 interface ProductInformationSectionProps {
   editorContent: string;
   setEditorContent: (content: string) => void;
-  handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBrochureUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleImageUpload: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleBrochureUpload: (event: ChangeEvent<HTMLInputElement>) => void;
   brochureFile: File | null;
 }
 
@@ -44,15 +44,35 @@ export function ProductInformationSection({
 
   const handleSubmit = (values: ProductFormData) => {
     // Handle form submission
-    console.log(values,'testinggggg');
+    console.log(values);
   };
+  const includedFields: (keyof ProductFormData)[] = [
+    'productName',
+    'itemCode',
+    'barcodeType',
+    'unit',
+    'brand',
+    'category',
+    'subCategory',
+     'businessLocation',
+    'alertQuantity',
+    'productType',
+    'productImage',
+   
+  ];
+
+
 
   return (
     <div
       className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
       style={{ borderTop: "4px solid #2563eb" }}
     >
-    <CommonForm initialValues={initialValues} onSubmit={handleSubmit} />
+     <CommonForm
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        includedFields={includedFields}
+      />
 
 
       {/* Manage Stock */}
