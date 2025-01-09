@@ -14,14 +14,14 @@ export interface ProductFormData {
 
 }
 export type TaxFormData = {
-  sellingPriceTaxType?: string;
-  applicableTax?: string;
-  productType?: string;
-  exctax?: string;
-  incTax?: string;
-  margin?: string;
-  excTax?: string;
-  productImage?: FileList;
+  sellingPriceTaxType: string;
+  applicableTax: string;
+  productType: string;
+  exctax: string;
+  incTax: string;
+  margin: string;
+  excTax: string;
+  productImage: FileList;
 };
 
 export interface FormFieldProps<T> {

@@ -4,11 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuillEditor from "@/components/common-components/QuillEditor/QuillEditor";
 import { ReusableForm } from "@/components/common-components/Formss/ReuseableForm";
-import {
-  productFormSchema,
-  ProductFormSchema,
-} from "../Schema/AddProductSchema";
-import type { FormFieldProps,ProductFormData } from "../type/ProductType";
+import { productFormSchema, ProductFormSchema } from "../Schema/AddProductSchema";
+import type { FormFieldProps, ProductFormData } from "../type/ProductType";
+import { UseFormReturn } from "react-hook-form";
 
 const fields: FormFieldProps<ProductFormData>[] = [
   {
@@ -96,7 +94,7 @@ interface ProductInformationSectionProps {
   setEditorContent: (content: string) => void;
   handleBrochureUpload: (event: ChangeEvent<HTMLInputElement>) => void;
   brochureFile: File | null;
-  onSubmit: (data: any) => void;
+  onFormStateChange: (methods: UseFormReturn<ProductFormSchema>) => void;
 }
 
 export function ProductInformationSection({
@@ -104,31 +102,19 @@ export function ProductInformationSection({
   setEditorContent,
   handleBrochureUpload,
   brochureFile,
-  onSubmit,
+  onFormStateChange,
 }: ProductInformationSectionProps) {
-  const handleSubmit = (formData: ProductFormSchema) => {
-    // Combine all data
-    const combinedData = {
-      ...formData,
-      description: editorContent,
-      brochureFile: brochureFile ? brochureFile.name : null,
-    };
-
-    onSubmit(combinedData); // Pass combined data to the parent
-  };
   return (
     <div
       className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
       style={{ borderTop: "4px solid #2563eb" }}
     >
-      {/* Reusable Form */}
       <ReusableForm
         fields={fields}
-        onSubmit={handleSubmit}
         schema={productFormSchema}
+        onFormStateChange={onFormStateChange}
       />
 
-      {/* Product Description */}
       <div className="space-y-2">
         <Label htmlFor="description" className="text-sm">
           Product Description:
@@ -136,7 +122,6 @@ export function ProductInformationSection({
         <QuillEditor value={editorContent} onChange={setEditorContent} />
       </div>
 
-      {/* Product Brochure */}
       <div className="space-y-2">
         <Label htmlFor="brochure" className="text-sm">
           Product Brochure:
@@ -162,9 +147,9 @@ export function ProductInformationSection({
           <p className="text-xs text-gray-500">
             Allowed File: .pdf, .csv, .zip, .doc, .docx, .jpeg, .jpg, .png
           </p>
-          
         </div>
       </div>
     </div>
   );
 }
+

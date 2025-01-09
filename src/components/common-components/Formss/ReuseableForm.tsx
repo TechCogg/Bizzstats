@@ -1,16 +1,36 @@
-import { FieldValues, Path, useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { InfoIcon } from 'lucide-react';
-import { ZodType } from 'zod';
+import React from "react";
+import {
+  useForm,
+  UseFormReturn,
+  Path,
+  FieldValues,
+  Controller,
+} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ZodType } from "zod";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { InfoIcon } from "lucide-react";
 
 interface FormFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
-  type: 'text' | 'email' | 'number' | 'password' | 'select' | 'checkbox' | 'file';
+  type:
+    | "text"
+    | "email"
+    | "number"
+    | "password"
+    | "select"
+    | "checkbox"
+    | "file";
   placeholder?: string;
   required?: boolean;
   hasInfoIcon?: boolean;
@@ -19,24 +39,31 @@ interface FormFieldProps<T extends FieldValues> {
 }
 
 interface ReusableFormProps<T extends FieldValues> {
-  onSubmit: (data: T) => void;
   fields: FormFieldProps<T>[];
   schema: ZodType<T>;
+  onFormStateChange: (methods: UseFormReturn<T>) => void;
 }
 
 export function ReusableForm<T extends FieldValues>({
-  onSubmit,
   fields,
   schema,
+  onFormStateChange,
 }: ReusableFormProps<T>) {
+  const methods = useForm<T>({
+    resolver: zodResolver(schema),
+    mode: "onChange", // This enables real-time validation
+  });
+
   const {
-    register,
-    handleSubmit,
     control,
     formState: { errors },
-  } = useForm<T>({
-    resolver: zodResolver(schema),
-  });
+    trigger,
+    register,
+  } = methods;
+
+  React.useEffect(() => {
+    onFormStateChange(methods);
+  }, [methods, onFormStateChange]);
 
   const renderField = (field: FormFieldProps<T>) => {
     const error = errors[field.name]?.message;
@@ -51,14 +78,22 @@ export function ReusableForm<T extends FieldValues>({
           {field.hasInfoIcon && <InfoIcon className="h-4 w-4 text-blue-500" />}
         </div>
 
-        {field.type === 'select' ? (
+        {field.type === "select" ? (
           <Controller
             name={field.name}
             control={control}
             render={({ field: { onChange, value } }) => (
-              <Select onValueChange={onChange} value={value}>
+              <Select
+                onValueChange={(newValue) => {
+                  onChange(newValue);
+                  trigger(field.name);
+                }}
+                value={value}
+              >
                 <SelectTrigger className="w-full bg-gray-50">
-                  <SelectValue placeholder={field.placeholder || 'Please Select'} />
+                  <SelectValue
+                    placeholder={field.placeholder || "Please Select"}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {field.options?.map((option) => (
@@ -70,13 +105,20 @@ export function ReusableForm<T extends FieldValues>({
               </Select>
             )}
           />
-        ) : field.type === 'checkbox' ? (
+        ) : field.type === "checkbox" ? (
           <div className="flex items-start space-x-2">
             <Controller
               name={field.name}
               control={control}
               render={({ field: { onChange, value } }) => (
-                <Checkbox id={field.name} checked={value} onCheckedChange={onChange} />
+                <Checkbox
+                  id={field.name}
+                  checked={value}
+                  onCheckedChange={(newValue) => {
+                    onChange(newValue);
+                    trigger(field.name);
+                  }}
+                />
               )}
             />
             {field.helperText && (
@@ -85,7 +127,7 @@ export function ReusableForm<T extends FieldValues>({
               </Label>
             )}
           </div>
-        ) : field.type === 'file' ? (
+        ) : field.type === "file" ? (
           <div className="space-y-2">
             <Controller
               name={field.name}
@@ -94,7 +136,10 @@ export function ReusableForm<T extends FieldValues>({
                 <Input
                   id={field.name}
                   type="file"
-                  onChange={(e) => onChange(e.target.files)}
+                  onChange={(e) => {
+                    onChange(e.target.files);
+                    trigger(field.name);
+                  }}
                   {...rest}
                 />
               )}
@@ -109,7 +154,9 @@ export function ReusableForm<T extends FieldValues>({
             type={field.type}
             placeholder={field.placeholder}
             className="w-full"
-            {...register(field.name)}
+            {...register(field.name, {
+              onChange: () => trigger(field.name),
+            })}
           />
         )}
 
@@ -119,14 +166,10 @@ export function ReusableForm<T extends FieldValues>({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form className="space-y-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {fields.map(renderField)}
       </div>
-      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-        Submit
-      </button>
     </form>
   );
 }
-
