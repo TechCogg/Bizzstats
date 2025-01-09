@@ -235,13 +235,7 @@ export const CommonForm: FC<CommonFormProps> = ({
                 options={fieldOptions.productType}
               />
             )}
-            {includedFields.includes('productImage') && (
-              <FileField
-                name="productImage"
-                label="Product Image:"
-                accept="image/*"
-              />
-            )}
+           
 
 
           {/* New sections for tax information fields */}
@@ -293,6 +287,13 @@ export const CommonForm: FC<CommonFormProps> = ({
                 label="Exc. Tax"
                 placeholder="0.00"
                 type="number"
+              />
+            )}
+             {includedFields.includes('productImage') && (
+              <FileField
+                name="productImage"
+                label="Product Image:"
+                accept="image/*"
               />
             )}
            

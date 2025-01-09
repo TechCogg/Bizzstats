@@ -1,12 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { ProductInformationSection } from "./components/AddProductInfo";
-import { TaxInformationSection } from "./components/AddTaxInfo";
+import  {ProductInformationSection}  from "./components/AddProductInfo/AddProductInfo";
+import { TaxInformationSection } from "./components/AddTaxInfo/AddTaxInfo";
 import { ChangeEvent } from "react";
 import { useState } from "react";
 export default function AddProductForm() {
-  const [productImage, setProductImage] = useState<string | null>(null);
   const [brochureFile, setBrochureFile] = useState<File | null>(null);
   const [editorContent, setEditorContent] = useState<string>("");
 
@@ -14,17 +13,7 @@ export default function AddProductForm() {
     setEditorContent(content);
   };
 
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProductImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
+ 
   const handleBrochureUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -41,7 +30,6 @@ export default function AddProductForm() {
       <ProductInformationSection
         editorContent={editorContent}
         setEditorContent={handleEditorChange}
-        handleImageUpload={handleImageUpload}
         handleBrochureUpload={handleBrochureUpload}
         brochureFile={brochureFile}
       />
