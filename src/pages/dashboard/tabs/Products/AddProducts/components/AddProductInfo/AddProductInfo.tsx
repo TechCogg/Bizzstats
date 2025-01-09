@@ -96,6 +96,7 @@ interface ProductInformationSectionProps {
   setEditorContent: (content: string) => void;
   handleBrochureUpload: (event: ChangeEvent<HTMLInputElement>) => void;
   brochureFile: File | null;
+  onSubmit: (data: any) => void;
 }
 
 export function ProductInformationSection({
@@ -103,11 +104,18 @@ export function ProductInformationSection({
   setEditorContent,
   handleBrochureUpload,
   brochureFile,
+  onSubmit,
 }: ProductInformationSectionProps) {
-  const handleSubmit = (data: ProductFormSchema) => {
-    console.log("Form submitted:", data);
-  };
+  const handleSubmit = (formData: ProductFormSchema) => {
+    // Combine all data
+    const combinedData = {
+      ...formData,
+      description: editorContent,
+      brochureFile: brochureFile ? brochureFile.name : null,
+    };
 
+    onSubmit(combinedData); // Pass combined data to the parent
+  };
   return (
     <div
       className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"

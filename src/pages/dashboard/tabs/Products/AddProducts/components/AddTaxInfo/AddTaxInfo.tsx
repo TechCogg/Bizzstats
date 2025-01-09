@@ -67,11 +67,27 @@ const fields2: FormFieldProps<TaxFormData>[] = [
     helperText: "Max File Size: 5MB\nAspect Ratio should be 1:1",
   },
 ];
+interface TaxInformationSectionProps {
+  onSubmit: (data: any) => void; // Callback to pass combined data to the parent
+}
 
-export function TaxInformationSection() {
-  const handleSubmit = (data: TaxFormSchema) => {
-    console.log("Form submitted:", data);
+export function TaxInformationSection({ onSubmit }: TaxInformationSectionProps) {
+  const handleSubmit = (formData: Partial<TaxFormData>, formIndex: number) => {
+    // Dynamically handle each form's data and combine into one object
+    formResults[`form${formIndex}`] = formData;
+
+    // Combine all form data
+    const combinedData = Object.values(formResults).reduce(
+      (acc, current) => ({ ...acc, ...current }),
+      {}
+    );
+
+    // Pass combined data to parent
+    onSubmit(combinedData);
   };
+
+  const formResults: Record<string, Partial<TaxFormData>> = {};
+
 
   return (
     <Card
@@ -80,9 +96,9 @@ export function TaxInformationSection() {
     >
       <div className="space-y-6">
         <ReusableForm
-          fields={fields1}
-          onSubmit={handleSubmit}
-          schema={taxFormSchema}
+           fields={fields1}
+           onSubmit={(data) => handleSubmit(data, 1)}
+           schema={taxFormSchema}
         />
 
         {/* Price Information Grid */}
@@ -115,22 +131,10 @@ export function TaxInformationSection() {
 
         <ReusableForm
           fields={fields2}
-          onSubmit={handleSubmit}
+          onSubmit={(data) => handleSubmit(data, 1)}
           schema={taxFormSchema}
         />
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-          <Button className="bg-indigo-600 text-white hover:bg-indigo-700">
-            Save & Add Opening Stock
-          </Button>
-          <Button className="bg-pink-500 text-white hover:bg-pink-600">
-            Save & Add Another
-          </Button>
-          <Button className="bg-blue-500 text-white hover:bg-blue-600">
-            Save
-          </Button>
-        </div>
       </div>
     </Card>
   );
