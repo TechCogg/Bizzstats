@@ -33,7 +33,30 @@
       "type": "Meat",
       "category": "Beef"
     }
-  
-   
+  ],
+  "productPost": [
+    {},
+    {
+      "id": "35ab",
+      "productName": "Test123",
+      "itemCode": "Test123",
+      "businessLocation": "Test123",
+      "alertQuantity": "Test123",
+      "barcodeType": "Code 128 (C128)",
+      "unit": "Gram",
+      "brand": "Brand 2",
+      "category": "Category 2",
+      "subCategory": "Sub Category 3",
+      "productType": "Single",
+      "manageStock": true,
+      "sellingPriceTaxType": "Inclusive",
+      "applicableTax": "VAT",
+      "exctax": "Test123",
+      "incTax": "Test123",
+      "margin": "Test123",
+      "excTax": "Test123",
+      "description": "<p>Testingggggggggggggggggggggggggggggggg</p>",
+      "brochureFile": null
+    }
   ]
 }

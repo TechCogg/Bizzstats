@@ -13,6 +13,7 @@ export const productFormSchema = z.object({
   productType: z.string().optional(),
   productImage: z.any().optional(),
   manageStock: z.boolean().optional(),
+  margin: z.string().optional(),
 });
 
 

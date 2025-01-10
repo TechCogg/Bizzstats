@@ -7,17 +7,22 @@ import { TaxInformationSection } from "./components/AddTaxInfo/AddTaxInfo";
 import { Button } from "@/components/ui/button";
 import { ProductFormSchema } from "./components/Schema/AddProductSchema";
 import { TaxFormSchema } from "./components/Schema/AddTaxSchema";
+import { useAddProduct } from "@/services/hooks/products/mutations/useSetProduct";
+import { Product } from "@/services/hooks/products/mutations/useSetProduct/interface";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddProductForm() {
   const [productFormMethods, setProductFormMethods] =
     useState<UseFormReturn<ProductFormSchema> | null>(null);
   const [taxForm1Methods, setTaxForm1Methods] =
     useState<UseFormReturn<TaxFormSchema> | null>(null);
-
   const [taxForm2Methods, setTaxForm2Methods] =
     useState<UseFormReturn<TaxFormSchema> | null>(null);
   const [editorContent, setEditorContent] = useState<string>("");
   const [brochureFile, setBrochureFile] = useState<File | null>(null);
+
+  const addProductMutation = useAddProduct();
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -30,7 +35,7 @@ export default function AddProductForm() {
     }
   };
 
-  const handleConsoleLog = async () => {
+  const handleSave = async () => {
     if (productFormMethods && taxForm1Methods && taxForm2Methods) {
       const isProductFormValid = await productFormMethods.trigger();
       const isTaxForm1Valid = await taxForm1Methods.trigger();
@@ -40,24 +45,29 @@ export default function AddProductForm() {
         const productData = productFormMethods.getValues();
         const taxData1 = taxForm1Methods.getValues();
         const taxData2 = taxForm2Methods.getValues();
-        const combinedData = {
+        const combinedData: Product = {
           ...productData,
           ...taxData1,
           ...taxData2,
           description: editorContent,
           brochureFile: brochureFile ? brochureFile.name : null,
-        };
-        console.log("Combined Data:", combinedData);
+        } as Product;
+
+        try {
+          await addProductMutation.mutateAsync(combinedData);
+          toast.success("Product added successfully!");
+          // Reset form or navigate to another page if needed
+        } catch (error) {
+          toast.error("Failed to add product. Please try again.");
+        }
       } else {
-        console.log(
-          "Form validation failed. Please check the form for errors."
-        );
+        toast.error("Form validation failed. Please check the form for errors.");
       }
     }
   };
 
   return (
-    <div className="p-2 space-y-6">
+    <div className=" space-y-6 ">
       <div className="pb-2">
         <h1 className="text-xl font-semibold">Add new Product</h1>
       </div>
@@ -81,11 +91,16 @@ export default function AddProductForm() {
           Save & Add Another
         </Button>
         <Button
-          onClick={handleConsoleLog}
+          onClick={handleSave}
           className="bg-blue-500 text-white hover:bg-blue-600"
-          disabled={!productFormMethods || !taxForm1Methods || !taxForm2Methods}
+          disabled={
+            !productFormMethods ||
+            !taxForm1Methods ||
+            !taxForm2Methods ||
+            addProductMutation.isPending
+          }
         >
-          Save
+          {addProductMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </div>
     </div>

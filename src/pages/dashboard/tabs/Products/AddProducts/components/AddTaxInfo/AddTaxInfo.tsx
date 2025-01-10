@@ -80,7 +80,7 @@ export function TaxInformationSection({
       className="p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
       style={{ borderTop: "4px solid #2563eb" }}
     >
-      <div className="space-y-6">
+      <div className="space-y-6 ">
         <ReusableForm
           fields={fields1}
           schema={taxFormSchema}
@@ -89,10 +89,10 @@ export function TaxInformationSection({
 
         <div>
           <div className="grid grid-cols-4 gap-4">
-            <div className="bg-green-600 text-white p-2 text-sm font-medium">
+            <div className="bg-green-500 text-white p-2 text-sm font-medium">
               Default Purchase Price
             </div>
-            <div className="bg-green-600 text-white p-2 text-sm font-medium flex items-center gap-2">
+            <div className="bg-green-500 text-white p-2 text-sm font-medium flex items-center gap-2">
               % Margin(%)
               <TooltipProvider>
                 <Tooltip>
@@ -105,10 +105,10 @@ export function TaxInformationSection({
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <div className="bg-green-600 text-white p-2 text-sm font-medium">
+            <div className="bg-green-500 text-white p-2 text-sm font-medium">
               Default Selling Price
             </div>
-            <div className="bg-green-600 text-white p-2 text-sm font-medium">
+            <div className="bg-green-500 text-white p-2 text-sm font-medium">
               Product Image
             </div>
           </div>

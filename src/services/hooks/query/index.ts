@@ -30,6 +30,7 @@ export const createQueryFn = <T>({
   };
 };
 
+
 // Define the structure for useFetchQuery parameters
 interface UseFetchQueryParams<T> {
   queryKey: QueryKey;

@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon } from 'lucide-react';
 
 interface FormFieldProps<T extends FieldValues> {
   name: Path<T>;
@@ -51,7 +51,7 @@ export function ReusableForm<T extends FieldValues>({
 }: ReusableFormProps<T>) {
   const methods = useForm<T>({
     resolver: zodResolver(schema),
-    mode: "onChange", // This enables real-time validation
+    mode: "onChange", 
   });
 
   const {
@@ -166,10 +166,10 @@ export function ReusableForm<T extends FieldValues>({
   };
 
   return (
-    <form className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {fields.map(renderField)}
       </div>
-    </form>
+    </div>
   );
 }
