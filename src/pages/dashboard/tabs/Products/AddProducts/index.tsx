@@ -9,8 +9,7 @@ import { ProductFormSchema } from "./components/Schema/AddProductSchema";
 import { TaxFormSchema } from "./components/Schema/AddTaxSchema";
 import { useAddProduct } from "@/services/hooks/products/mutations/useSetProduct";
 import { Product } from "@/services/hooks/products/mutations/useSetProduct/interface";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toastify } from "@/components/common-components/Toastify/Toastify";
 
 export default function AddProductForm() {
   const [productFormMethods, setProductFormMethods] =
@@ -22,7 +21,10 @@ export default function AddProductForm() {
   const [editorContent, setEditorContent] = useState<string>("");
   const [brochureFile, setBrochureFile] = useState<File | null>(null);
 
-  const addProductMutation = useAddProduct();
+  const addProductMutation = useAddProduct({
+    successMessage: 'Product added successfully!',
+    errorMessage: 'Failed to add product. Please try again.',
+  });
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -53,21 +55,13 @@ export default function AddProductForm() {
           brochureFile: brochureFile ? brochureFile.name : null,
         } as Product;
 
-        try {
-          await addProductMutation.mutateAsync(combinedData);
-          toast.success("Product added successfully!");
-          // Reset form or navigate to another page if needed
-        } catch (error) {
-          toast.error("Failed to add product. Please try again.");
-        }
-      } else {
-        toast.error("Form validation failed. Please check the form for errors.");
+        addProductMutation.mutate(combinedData);
       }
     }
   };
 
   return (
-    <div className=" space-y-6 ">
+    <div className="space-y-6">
       <div className="pb-2">
         <h1 className="text-xl font-semibold">Add new Product</h1>
       </div>
@@ -103,6 +97,8 @@ export default function AddProductForm() {
           {addProductMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </div>
+      <Toastify />
     </div>
   );
 }
+

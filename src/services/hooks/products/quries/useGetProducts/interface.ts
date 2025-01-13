@@ -3,14 +3,26 @@ export interface IProductsListRes {
 }
 export interface ItemProducts {
     id: string
-    image: string
-    name: string
-    location: string
-    unitPrice: number
-    sellingPrice: number
-    stock: number
-    type: string
-    category: string
+    alertQuantity: string;
+    applicableTax: string;
+    barcodeType: string;
+    brand: string;
+    brochureFile: string | null;
+    businessLocation: string;
+    category: string;
+    description: string;
+    excTax: string;
+    exctax: string;
+    incTax: string;
+    itemCode: string;
+    manageStock: boolean;
+    margin: string;
+    productImage: string | null;
+    productName: string;
+    productType: string;
+    sellingPriceTaxType: string;
+    subCategory: string;
+    unit: string;
   }
 
   

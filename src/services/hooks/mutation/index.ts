@@ -1,6 +1,7 @@
 import { useMutation, UseMutationOptions, MutationKey } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig } from 'axios';
-import { api } from '@/services/api'; // Assuming you have an api instance set up
+import { api } from '@/services/api';
+import { showToast } from '@/components/common-components/Toastify/Toastify';
 
 // Define the structure for the mutation function parameters
 interface MutationFnParams<TData, TVariables> {
@@ -36,6 +37,8 @@ interface UseMutationParams<TData, TVariables, TContext = unknown> {
     UseMutationOptions<TData, AxiosError, TVariables, TContext>,
     'mutationKey' | 'mutationFn'
   >;
+  successMessage?: string;
+  errorMessage?: string;
 }
 
 // Create a custom hook for mutations
@@ -43,11 +46,27 @@ export const useCustomMutation = <TData, TVariables, TContext = unknown>({
   mutationKey,
   mutationFn,
   options,
+  successMessage,
+  errorMessage,
 }: UseMutationParams<TData, TVariables, TContext>) => {
   return useMutation<TData, AxiosError, TVariables, TContext>({
     mutationKey,
     mutationFn,
     ...options,
+    onSuccess: (data, variables, context) => {
+      if (successMessage) {
+        showToast(successMessage, 'success');
+      }
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      if (errorMessage) {
+        showToast(errorMessage, 'error');
+      } else {
+        showToast(error.message || 'An error occurred', 'error');
+      }
+      options?.onError?.(error, variables, context);
+    },
   });
 };
 

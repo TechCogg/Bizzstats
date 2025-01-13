@@ -54,19 +54,19 @@ export function ProductTable({
             </TableCell>
             <TableCell>
               <Image
-                src={product.image || "/default-image.png"}
-                alt={product.name}
+                src={product.productImage || "/default-image.png"}
+                alt={product.productName}
                 width={40}
                 height={40}
                 className="rounded-md"
               />
             </TableCell>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>{product.location}</TableCell>
-            <TableCell>$ {product.unitPrice.toFixed(2)}</TableCell>
-            <TableCell>$ {product.sellingPrice.toFixed(2)}</TableCell>
-            <TableCell>{product.stock}</TableCell>
-            <TableCell>{product.type}</TableCell>
+            <TableCell>{product.productName}</TableCell>
+            <TableCell>{product.businessLocation}</TableCell>
+            <TableCell>$ {product.incTax}</TableCell>
+            <TableCell>$ {product.incTax}</TableCell>
+            <TableCell>{product.alertQuantity}</TableCell>
+            <TableCell>{product.productType}</TableCell>
             <TableCell>{product.category}</TableCell>
           </TableRow>
         ))}

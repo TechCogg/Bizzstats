@@ -11,9 +11,17 @@ import { DeleteConfirmationModal } from "./components/DeleteConfirmationModal";
 import { LocationModal } from "./components/LocationModal";
 import { GetProductsList } from "@/services/hooks/products";
 import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
+import { useDeleteProduct } from "@/services/hooks/products"; // Import the custom hook
+import { Toastify } from "@/components/common-components/Toastify/Toastify";
 
 const allCategories = ["All", "Mutton", "Chicken", "Beef", "Pork", "Lamb"];
-const allLocations = ["All", "Candies Restaurant", "Steakhouse", "Butcher Shop", "Fine Dining"];
+const allLocations = [
+  "All",
+  "Candies Restaurant",
+  "Steakhouse",
+  "Butcher Shop",
+  "Fine Dining",
+];
 
 export default function Products() {
   const { data: productsData } = GetProductsList();
@@ -34,26 +42,32 @@ export default function Products() {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [modalAction, setModalAction] = useState<"add" | "remove" | null>(null);
 
-  
+  const deleteProduct = useDeleteProduct({
+    successMessage: "Product(s) deleted successfully",
+    errorMessage: "Failed to delete product(s)",
+  });
+
   useEffect(() => {
     if (productsData) {
       const initializedProducts = productsData.map((product: ItemProducts) => ({
-        ...product,   
+        ...product,
       }));
       setProducts(initializedProducts);
     }
   }, [productsData]);
 
-
-
   useEffect(() => {
     // Apply filters
     let filteredProducts = products;
     if (filters.category !== "All") {
-      filteredProducts = filteredProducts.filter((p) => p.category === filters.category);
+      filteredProducts = filteredProducts.filter(
+        (p) => p.category === filters.category
+      );
     }
     if (filters.location !== "All") {
-      filteredProducts = filteredProducts.filter((p) => p.location === filters.location);
+      filteredProducts = filteredProducts.filter(
+        (p) => p.businessLocation === filters.location
+      );
     }
     // Add more filter logic here as needed
     setProducts(filteredProducts);
@@ -83,10 +97,16 @@ export default function Products() {
     }
   };
 
-  const confirmDelete = () => {
-    setProducts((prev) => prev.filter((p) => !selectedItems.includes(p.id)));
-    setSelectedItems([]);
-    setShowDeleteConfirmation(false);
+  const confirmDelete = async () => {
+    try {
+      for (const id of selectedItems) {
+        await deleteProduct.mutateAsync({ ProductId: id });
+      }
+      setProducts((prev) => prev.filter((p) => !selectedItems.includes(p.id)));
+      setSelectedItems([]);
+    } finally {
+      setShowDeleteConfirmation(false);
+    }
   };
 
   const handleLocationAction = (action: "add" | "remove") => {
@@ -99,6 +119,7 @@ export default function Products() {
   const handleInfoClick = () => {
     alert("This section allows you to manage your product inventory.");
   };
+
   const handleLocationConfirm = (location: string) => {
     // Implement add/remove logic here
     console.log(`${modalAction} items to/from ${location}`);
@@ -118,7 +139,10 @@ export default function Products() {
       </div>
 
       {/* Filters Section */}
-      <Card className="border rounded-lg bg-white border-gray-200 overflow-hidden" style={{ borderTop: "4px solid #2563eb" }}>
+      <Card
+        className="border rounded-lg bg-white border-gray-200 overflow-hidden"
+        style={{ borderTop: "4px solid #2563eb" }}
+      >
         <CardContent className="pt-6">
           <div className="mb-4">
             <h2 className="text-blue-600 text-sm font-medium mb-4">Filters</h2>
@@ -134,8 +158,14 @@ export default function Products() {
       </Card>
 
       {/* Table Actions */}
-      <div className="bg-white p-4 border rounded-lg border-gray-200 overflow-hidden" style={{ borderTop: "4px solid #2563eb" }}>
-        <TableActions itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+      <div
+        className="bg-white p-4 border rounded-lg border-gray-200 overflow-hidden"
+        style={{ borderTop: "4px solid #2563eb" }}
+      >
+        <TableActions
+          itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
+        />
 
         <div className="border rounded-lg bg-white mt-4">
           <ProductTable
@@ -144,27 +174,36 @@ export default function Products() {
             toggleSelectAll={toggleSelectAll}
             toggleSelectItem={toggleSelectItem}
           />
-          
         </div>
         <div className="flex justify-end space-x-2 p-4">
-          <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onClick={handleDeleteSelected}>
-            Delete Selected
-          </button>
-          <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded" onClick={() => handleLocationAction("add")}>
+          <Button
+            variant="destructive"
+            onClick={handleDeleteSelected}
+            disabled={selectedItems.length === 0 || deleteProduct.isPending}
+          >
+            {deleteProduct.isPending ? "Deleting..." : "Delete Selected"}
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => handleLocationAction("add")}
+            disabled={selectedItems.length === 0}
+          >
             Add To Location
-          </button>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" onClick={() => handleLocationAction("remove")}>
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => handleLocationAction("remove")}
+            disabled={selectedItems.length === 0}
+          >
             Remove From Location
-          </button>
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded" onClick={() => handleLocationAction("remove")}>
-            Remove From Location
-          </button>
-          <button
-            className="bg-blue-300 text-white-100 py-0 px-4 rounded-full border"
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full w-8 h-8 p-0"
             onClick={handleInfoClick}
           >
             i
-          </button>
+          </Button>
         </div>
 
         <Paginate
@@ -185,10 +224,10 @@ export default function Products() {
         isOpen={showLocationModal}
         onClose={() => setShowLocationModal(false)}
         onConfirm={handleLocationConfirm}
-        locations={allLocations.filter(loc => loc !== "All")}
+        locations={allLocations.filter((loc) => loc !== "All")}
         action={modalAction || "add"}
       />
+      <Toastify />
     </div>
   );
 }
-
