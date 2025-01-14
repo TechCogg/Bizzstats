@@ -1,30 +1,58 @@
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, FileDown, FileSpreadsheet, Printer, Columns, FileText } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Plus,
+  FileDown,
+  FileSpreadsheet,
+  Printer,
+  Columns,
+  FileText,
+} from "lucide-react";
+import Link from "next/link";
 
 interface TableActionsProps {
   itemsPerPage: number;
   setItemsPerPage: (value: number) => void;
 }
 
-export function TableActions({ itemsPerPage, setItemsPerPage }: TableActionsProps) {
+export function TableActions({
+  itemsPerPage,
+  setItemsPerPage,
+}: TableActionsProps) {
   return (
     <div className="space-y-4">
       <div className="flex border-b">
-        <Button variant="ghost" className="border-b-2 border-blue-600 text-blue-600 rounded-none px-4 py-2">
+        <Button
+          variant="ghost"
+          className="border-b-2 border-blue-600 text-blue-600 rounded-none px-4 py-2"
+        >
           Accounts
         </Button>
         <Button variant="ghost" className="rounded-none px-4 py-2">
           Account Types
         </Button>
       </div>
-
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Plus className="h-4 w-4 mr-2" /> Add
-          </Button>
-          <Button size="sm" variant="outline" className="text-white bg-green-600">
+          <Link href="/dashboard?tab=add-product">
+            <Button
+              size="sm"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" /> Add
+            </Button>
+          </Link>
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-white bg-green-600"
+          >
             <FileDown className="h-4 w-4 mr-2" /> Download template file
           </Button>
         </div>
@@ -66,4 +94,3 @@ export function TableActions({ itemsPerPage, setItemsPerPage }: TableActionsProp
     </div>
   );
 }
-

@@ -11,7 +11,7 @@ import { DeleteConfirmationModal } from "./components/DeleteConfirmationModal";
 import { LocationModal } from "./components/LocationModal";
 import { GetProductsList } from "@/services/hooks/products";
 import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
-import { useDeleteProduct } from "@/services/hooks/products"; // Import the custom hook
+import { useDeleteProduct } from "@/services/hooks/products"; 
 import { Toastify } from "@/components/common-components/Toastify/Toastify";
 
 const allCategories = ["All", "Mutton", "Chicken", "Beef", "Pork", "Lamb"];

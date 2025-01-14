@@ -32,6 +32,7 @@ import Kitchen from "../dashboard/tabs/Kitchen";
 import Orders from "../dashboard/tabs/Orders";
 import Notification from "../dashboard/tabs/Notification Templates";
 import Setting from "../dashboard/tabs/Settings";
+import Link from "next/link";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -147,7 +148,9 @@ const Dashboard = () => {
         } fixed left-0 top-0 z-30 lg:relative lg:translate-x-0`}
       >
         <div className="p-4 flex justify-center">
+          <Link href="/">
           <Image src="/bizzlogo.png" alt="Bizz Stats" width={80} height={80} />
+          </Link>
         </div>
         <ScrollArea className="flex-grow">
           <nav className="mt-5 px-2">

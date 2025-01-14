@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info } from 'lucide-react';
+import { Info } from "lucide-react";
 import { ReusableForm } from "@/components/common-components/Formss/ReuseableForm";
 import { TaxFormSchema, taxFormSchema } from "../Schema/AddTaxSchema";
 import type { FormFieldProps, TaxFormData } from "../type/ProductType";
@@ -41,8 +41,8 @@ const fields2: FormFieldProps<TaxFormData>[] = [
     placeholder: "0.00",
   },
   {
-    name: "incTax",
-    label: "Inc. tax",
+    name: "excTax",
+    label: "Exc. tax",
     type: "text",
     placeholder: "0.00",
   },
@@ -52,9 +52,10 @@ const fields2: FormFieldProps<TaxFormData>[] = [
     type: "text",
     placeholder: "0.00",
   },
+
   {
-    name: "excTax",
-    label: "Exc. tax",
+    name: "incTax",
+    label: "Inc. tax",
     type: "text",
     placeholder: "0.00",
   },
@@ -88,28 +89,15 @@ export function TaxInformationSection({
         />
 
         <div>
-          <div className="grid grid-cols-4 gap-4">
-            <div className="bg-green-500 text-white p-2 text-sm font-medium">
+          <div className="grid grid-cols-3 gap-x-6">
+            <div className="bg-green-500 text-white p-2 text-sm font-medium text-center">
               Default Purchase Price
             </div>
-            <div className="bg-green-500 text-white p-2 text-sm font-medium flex items-center gap-2">
-              % Margin(%)
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-4 w-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Set margin percentage</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <div className="bg-green-500 text-white p-2 text-sm font-medium">
+            <div className="bg-green-500 text-center text-white p-2 text-sm font-medium">
               Default Selling Price
             </div>
-            <div className="bg-green-500 text-white p-2 text-sm font-medium">
-              Product Image
+            <div className="bg-green-500 text-center text-white p-2 text-sm font-medium">
+              % Margin(%)
             </div>
           </div>
         </div>
@@ -123,4 +111,3 @@ export function TaxInformationSection({
     </Card>
   );
 }
-
