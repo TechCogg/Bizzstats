@@ -11,10 +11,11 @@ import Image from "next/image";
 import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
 
 interface ProductTableProps {
-  currentItems: ItemProducts[]; // Using your existing ItemProducts interface
+  currentItems: ItemProducts[];
   selectedItems: string[];
   toggleSelectAll: () => void;
   toggleSelectItem: (id: string) => void;
+  businessLocations: { id: string; locations: string | string[] }[];
 }
 
 export function ProductTable({
@@ -22,6 +23,7 @@ export function ProductTable({
   selectedItems,
   toggleSelectAll,
   toggleSelectItem,
+  businessLocations,
 }: ProductTableProps) {
   return (
     <Table>
@@ -44,33 +46,41 @@ export function ProductTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {currentItems.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell>
-              <Checkbox
-                checked={selectedItems.includes(product.id)}
-                onCheckedChange={() => toggleSelectItem(product.id)}
-              />
-            </TableCell>
-            <TableCell>
-              <Image
-                src={product.productImage || "/default-image.png"}
-                alt={product.productName}
-                width={40}
-                height={40}
-                className="rounded-md"
-              />
-            </TableCell>
-            <TableCell>{product.productName}</TableCell>
-            <TableCell>{product.businessLocation}</TableCell>
-            <TableCell>$ {product.incTax}</TableCell>
-            <TableCell>$ {product.incTax}</TableCell>
-            <TableCell>{product.alertQuantity}</TableCell>
-            <TableCell>{product.productType}</TableCell>
-            <TableCell>{product.category}</TableCell>
-          </TableRow>
-        ))}
+        {currentItems.map((product) => {
+          const productLocations = businessLocations.find(bl => bl.id === product.id)?.locations;
+          const formattedLocations = Array.isArray(productLocations) 
+            ? productLocations.join(', ') 
+            : productLocations || 'N/A';
+
+          return (
+            <TableRow key={product.id}>
+              <TableCell>
+                <Checkbox
+                  checked={selectedItems.includes(product.id)}
+                  onCheckedChange={() => toggleSelectItem(product.id)}
+                />
+              </TableCell>
+              <TableCell>
+                <Image
+                  src={product.productImage || "/default-image.png"}
+                  alt={product.productName}
+                  width={40}
+                  height={40}
+                  className="rounded-md"
+                />
+              </TableCell>
+              <TableCell>{product.productName}</TableCell>
+              <TableCell>{formattedLocations}</TableCell>
+              <TableCell>$ {product.incTax}</TableCell>
+              <TableCell>$ {product.incTax}</TableCell>
+              <TableCell>{product.alertQuantity}</TableCell>
+              <TableCell>{product.productType}</TableCell>
+              <TableCell>{product.category}</TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
 }
+

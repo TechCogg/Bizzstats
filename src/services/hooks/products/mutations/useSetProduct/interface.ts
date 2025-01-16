@@ -4,7 +4,7 @@ export interface Product {
     barcodeType: string;
     brand: string;
     brochureFile: string | null;
-    businessLocation: string;
+    businessLocation: string | string[];
     category: string;
     description: string;
     excTax: string;

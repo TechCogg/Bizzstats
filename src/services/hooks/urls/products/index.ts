@@ -11,3 +11,6 @@ export const DELETE_PRODUCT = (ProductId: string | number |any): string => {
   return `http://localhost:3000/products/${ProductId}`;
 };
 
+export const UPDATE_PRODUCT = (ProductId: string | number): string => {
+  return `http://localhost:3000/products/${ProductId}`;
+};

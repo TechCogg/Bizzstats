@@ -12,15 +12,16 @@ import { LocationModal } from "./components/LocationModal";
 import { GetProductsList } from "@/services/hooks/products";
 import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
 import { useDeleteProduct } from "@/services/hooks/products"; 
+import { useUpdateProductLocation } from "@/services/hooks/products";
 import { Toastify } from "@/components/common-components/Toastify/Toastify";
 
 const allCategories = ["All", "Mutton", "Chicken", "Beef", "Pork", "Lamb"];
 const allLocations = [
   "All",
-  "Candies Restaurant",
-  "Steakhouse",
-  "Butcher Shop",
-  "Fine Dining",
+  "Lahore",
+  "Karachi",
+  "Islamabad",
+  "Multan",
 ];
 
 export default function Products() {
@@ -47,6 +48,11 @@ export default function Products() {
     errorMessage: "Failed to delete product(s)",
   });
 
+  const updateProductLocation = useUpdateProductLocation({
+    successMessage: "Product location updated successfully",
+    errorMessage: "Failed to update product location",
+  });
+
   useEffect(() => {
     if (productsData) {
       const initializedProducts = productsData.map((product: ItemProducts) => ({
@@ -55,6 +61,7 @@ export default function Products() {
       setProducts(initializedProducts);
     }
   }, [productsData]);
+  
 
   useEffect(() => {
     // Apply filters
@@ -120,9 +127,37 @@ export default function Products() {
     alert("This section allows you to manage your product inventory.");
   };
 
-  const handleLocationConfirm = (location: string) => {
-    // Implement add/remove logic here
-    console.log(`${modalAction} items to/from ${location}`);
+  const handleLocationConfirm = async (location: string) => {
+    for (const productId of selectedItems) {
+      const product = products.find(p => p.id === productId);
+      if (product) {
+        let updatedLocations: string[];
+        if (modalAction === "add") {
+          updatedLocations = Array.isArray(product.businessLocation) 
+            ? [...new Set([...product.businessLocation, location])]
+            : [product.businessLocation, location].filter(Boolean);
+        } else {
+          updatedLocations = Array.isArray(product.businessLocation)
+            ? product.businessLocation.filter(loc => loc !== location)
+            : product.businessLocation === location ? [] : [product.businessLocation];
+        }
+        
+        try {
+          await updateProductLocation.mutateAsync({
+            ProductId: productId,
+            businessLocation: updatedLocations,
+            existingProductData: product, // Pass the entire product object
+          });
+          
+          // Update the local state immediately
+          setProducts(prevProducts => prevProducts.map(p => 
+            p.id === productId ? { ...p, businessLocation: updatedLocations } : p
+          ));
+        } catch (error) {
+          console.error("Failed to update product location:", error);
+        }
+      }
+    }
     setShowLocationModal(false);
   };
 
@@ -173,6 +208,7 @@ export default function Products() {
             selectedItems={selectedItems}
             toggleSelectAll={toggleSelectAll}
             toggleSelectItem={toggleSelectItem}
+            businessLocations={products.map(p => ({ id: p.id, locations: p.businessLocation }))}
           />
         </div>
         <div className="flex justify-end space-x-2 p-4">
@@ -231,3 +267,4 @@ export default function Products() {
     </div>
   );
 }
+
