@@ -1,18 +1,16 @@
 {
   "products": [
     {
-      "id": "5b70",
-      "productName": "Broast",
-      "itemCode": "1122",
-      "businessLocation": [
-        "Multan"
-      ],
-      "alertQuantity": "123",
+      "id": "f7f4",
+      "productName": "Apple",
+      "itemCode": "123",
+      "businessLocation": "Lahore",
+      "alertQuantity": "100",
       "barcodeType": "Code 39",
-      "unit": "Gram",
+      "unit": "Piece",
       "brand": "Brand 1",
-      "category": "Category 2",
-      "subCategory": "Sub Category 2",
+      "category": "Category 1",
+      "subCategory": "Sub Category 1",
       "productType": "Single",
       "manageStock": true,
       "sellingPriceTaxType": "Inclusive",
@@ -21,23 +19,20 @@
       "excTax": "100",
       "margin": "100",
       "incTax": "100",
-      "description": "<p>This is Broast!</p>",
+      "description": "<p>Applee</p>",
       "brochureFile": null
     },
     {
-      "id": "5b340",
-      "productName": "Broast",
-      "itemCode": "1122",
-      "businessLocation": [
-        "Multan",
-        "Steakhouse"
-      ],
-      "alertQuantity": "123",
-      "barcodeType": "Code 39",
+      "id": "b160",
+      "productName": "Banana",
+      "itemCode": "987",
+      "businessLocation": "Karachi",
+      "alertQuantity": "100",
+      "barcodeType": "EAN-13",
       "unit": "Gram",
-      "brand": "Brand 1",
+      "brand": "Brand 3",
       "category": "Category 2",
-      "subCategory": "Sub Category 2",
+      "subCategory": "Sub Category 3",
       "productType": "Single",
       "manageStock": true,
       "sellingPriceTaxType": "Inclusive",
@@ -46,7 +41,24 @@
       "excTax": "100",
       "margin": "100",
       "incTax": "100",
-      "description": "<p>This is Broast!</p>",
+      "description": "<p>Applee</p>",
+      "brochureFile": null
+    },
+    {
+      "id": "9723",
+      "productName": "Mango",
+      "itemCode": "1122",
+      "businessLocation": "",
+      "alertQuantity": "",
+      "barcodeType": "UPC-A",
+      "unit": "Kg",
+      "brand": "Brand 2",
+      "category": "Category 2",
+      "exctax": "",
+      "excTax": "",
+      "margin": "",
+      "incTax": "100",
+      "description": "",
       "brochureFile": null
     }
   ]

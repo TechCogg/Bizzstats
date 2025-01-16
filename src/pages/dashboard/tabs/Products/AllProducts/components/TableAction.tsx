@@ -6,24 +6,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Plus,
-  FileDown,
-  FileSpreadsheet,
-  Printer,
-  Columns,
-  FileText,
-} from "lucide-react";
+import { Plus, FileDown, Columns, Printer } from "lucide-react";
 import Link from "next/link";
+import { DataExport } from "@/components/common-components/DataExport/DataExport";
+import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
 
+const columnLabels: Record<keyof ItemProducts, string> = {
+  id: "ID",
+  productName: "Product Name",
+  itemCode: "Item Code",
+  barcodeType: "Barcode Type",
+  unit: "Unit",
+  brand: "Brand",
+  category: "Category",
+  subCategory: "Sub-Category",
+  businessLocation: "Business Location",
+  alertQuantity: "Alert Quantity",
+  productType: "Product Type",
+  manageStock: "Manage Stock",
+  sellingPriceTaxType: "Selling Price Tax Type",
+  applicableTax: "Applicable Tax",
+  excTax: "Excluding Tax",
+  exctax: "Excluding Tax (Duplicate)",
+  incTax: "Including Tax",
+  margin: "Margin",
+  description: "Description",
+  productImage: "Product Image",
+  brochureFile: "Brochure File",
+};
 interface TableActionsProps {
   itemsPerPage: number;
   setItemsPerPage: (value: number) => void;
+  currentItems: ItemProducts[];
 }
 
 export function TableActions({
   itemsPerPage,
   setItemsPerPage,
+  currentItems,
 }: TableActionsProps) {
   return (
     <div className="space-y-4">
@@ -57,20 +77,16 @@ export function TableActions({
           </Button>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="bg-white">
-            <FileDown className="h-4 w-4 mr-2" /> Export to CSV
-          </Button>
-          <Button variant="outline" size="sm" className="bg-white">
-            <FileSpreadsheet className="h-4 w-4 mr-2" /> Export to Excel
-          </Button>
+          <DataExport<ItemProducts>
+            data={currentItems}
+            filename="products"
+            columnLabels={columnLabels}
+          />
           <Button variant="outline" size="sm" className="bg-white">
             <Printer className="h-4 w-4 mr-2" /> Print
           </Button>
           <Button variant="outline" size="sm" className="bg-white">
             <Columns className="h-4 w-4 mr-2" /> Column Visibility
-          </Button>
-          <Button variant="outline" size="sm" className="bg-white">
-            <FileText className="h-4 w-4 mr-2" /> Export to PDF
           </Button>
         </div>
       </div>

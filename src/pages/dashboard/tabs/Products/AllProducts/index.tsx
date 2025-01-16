@@ -199,8 +199,8 @@ export default function Products() {
       >
         <TableActions
           itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-        />
+          setItemsPerPage={setItemsPerPage} 
+          currentItems={currentItems}        />
 
         <div className="border rounded-lg bg-white mt-4">
           <ProductTable
