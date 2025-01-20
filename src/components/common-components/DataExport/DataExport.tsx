@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { FileDown, FileSpreadsheet, FileText } from "lucide-react";
+import { FileDown, FileSpreadsheet, FileText, Printer } from "lucide-react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
@@ -51,6 +51,44 @@ export const DataExport = <T,>({ data, filename, columnLabels }: DataExportProps
     doc.save(`${filename}.pdf`);
   };
 
+  const printTable = () => {
+    const printWindow = window.open("", "_blank");
+    const tableHTML = `
+      <html>
+        <head>
+          <style>
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #000; text-align: left; font-size: 10px; }
+          </style>
+        </head>
+        <body>
+          <table>
+            <thead>
+              <tr>
+                ${Object.values(columnLabels).map((label) => `<th>${label}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${data
+                .map(
+                  (row) =>
+                    `<tr>${(Object.keys(columnLabels) as (keyof T)[]).map(
+                      (key) => `<td>${String(row[key])}</td>`
+                    ).join("")}</tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+    if (printWindow) {
+      printWindow.document.write(tableHTML);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+  
   return (
     <>
       <Button variant="outline" size="sm" className="bg-white" onClick={exportToCSV}>
@@ -61,6 +99,9 @@ export const DataExport = <T,>({ data, filename, columnLabels }: DataExportProps
       </Button>
       <Button variant="outline" size="sm" className="bg-white" onClick={exportToPDF}>
         <FileText className="h-4 w-4 mr-2" /> Export to PDF
+      </Button>
+      <Button variant="outline" size="sm" className="bg-white" onClick={printTable}>
+        <Printer className="h-4 w-4 mr-2" /> Print
       </Button>
     </>
   );

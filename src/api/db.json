@@ -4,7 +4,10 @@
       "id": "f7f4",
       "productName": "Apple",
       "itemCode": "123",
-      "businessLocation": "Lahore",
+      "businessLocation": [
+        "Lahore",
+        "Karachi"
+      ],
       "alertQuantity": "100",
       "barcodeType": "Code 39",
       "unit": "Piece",
@@ -43,23 +46,44 @@
       "incTax": "100",
       "description": "<p>Applee</p>",
       "brochureFile": null
+    }
+  ],
+  "purchases": [
+    {
+      "date": "2025-01-12",
+      "referenceNo": "REF12347",
+      "businessLocation": "Main Warehouse",
+      "supplier": "Global Goods Ltd.",
+      "purchaseStatus": "Received",
+      "paymentStatus": "Paid",
+      "grandTotal": 7000,
+      "paymentDue": 0,
+      "addedBy": "Alice Johnson",
+      "id": "b966"
     },
     {
-      "id": "9723",
-      "productName": "Mango",
-      "itemCode": "1122",
-      "businessLocation": "",
-      "alertQuantity": "",
-      "barcodeType": "UPC-A",
-      "unit": "Kg",
-      "brand": "Brand 2",
-      "category": "Category 2",
-      "exctax": "",
-      "excTax": "",
-      "margin": "",
-      "incTax": "100",
-      "description": "",
-      "brochureFile": null
+      "date": "2025-01-12",
+      "referenceNo": "REF12347",
+      "businessLocation": "Main Warehouse",
+      "supplier": "Global Goods Ltd.",
+      "purchaseStatus": "Received",
+      "paymentStatus": "Paid",
+      "grandTotal": 7000,
+      "paymentDue": 0,
+      "addedBy": "Alice Johnson",
+      "id": "b967"
+    },
+    {
+      "date": "2025-01-12",
+      "referenceNo": "REF12347",
+      "businessLocation": "Main Warehouse",
+      "supplier": "Global Goods Ltd.",
+      "purchaseStatus": "Received",
+      "paymentStatus": "Paid",
+      "grandTotal": 7000,
+      "paymentDue": 0,
+      "addedBy": "Alice Johnson",
+      "id": "b968"
     }
   ]
 }

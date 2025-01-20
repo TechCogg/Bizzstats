@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -38,12 +39,16 @@ interface TableActionsProps {
   itemsPerPage: number;
   setItemsPerPage: (value: number) => void;
   currentItems: ItemProducts[];
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 }
 
 export function TableActions({
   itemsPerPage,
   setItemsPerPage,
-  currentItems,
+  currentItems,  
+  searchQuery,
+  setSearchQuery,
 }: TableActionsProps) {
   return (
     <div className="space-y-4">
@@ -82,15 +87,13 @@ export function TableActions({
             filename="products"
             columnLabels={columnLabels}
           />
-          <Button variant="outline" size="sm" className="bg-white">
-            <Printer className="h-4 w-4 mr-2" /> Print
-          </Button>
+
           <Button variant="outline" size="sm" className="bg-white">
             <Columns className="h-4 w-4 mr-2" /> Column Visibility
           </Button>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         <span className="text-sm">Show</span>
         <Select
           value={itemsPerPage.toString()}
@@ -105,8 +108,15 @@ export function TableActions({
             <SelectItem value="100">100</SelectItem>
           </SelectContent>
         </Select>
-        <span className="text-sm">entries</span>
+        <span className="text-sm">Entries</span>
+        <Input
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="max-w-xs"
+      />
       </div>
+    
     </div>
   );
 }

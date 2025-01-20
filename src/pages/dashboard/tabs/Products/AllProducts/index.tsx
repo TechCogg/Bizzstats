@@ -7,26 +7,21 @@ import Paginate from "@/components/common-components/Paginate";
 import { ProductFilters } from "./components/ProductFilters";
 import { TableActions } from "./components/TableAction";
 import { ProductTable } from "./components/ProductTable";
-import { DeleteConfirmationModal } from "./components/DeleteConfirmationModal";
+import { DeleteConfirmationModal } from "@/components/common-components/ConfirmationModals/DeleteConfirmationModal";
 import { LocationModal } from "./components/LocationModal";
 import { GetProductsList } from "@/services/hooks/products";
 import { ItemProducts } from "@/services/hooks/products/quries/useGetProducts/interface";
-import { useDeleteProduct } from "@/services/hooks/products"; 
+import { useDeleteProduct } from "@/services/hooks/products";
 import { useUpdateProductLocation } from "@/services/hooks/products";
 import { Toastify } from "@/components/common-components/Toastify/Toastify";
 
 const allCategories = ["All", "Mutton", "Chicken", "Beef", "Pork", "Lamb"];
-const allLocations = [
-  "All",
-  "Lahore",
-  "Karachi",
-  "Islamabad",
-  "Multan",
-];
+const allLocations = ["All", "Lahore", "Karachi", "Islamabad", "Multan"];
 
 export default function Products() {
   const { data: productsData } = GetProductsList();
   const [products, setProducts] = useState<ItemProducts[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ItemProducts[]>([]); 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [filters, setFilters] = useState({
     name: "All",
@@ -42,6 +37,7 @@ export default function Products() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [modalAction, setModalAction] = useState<"add" | "remove" | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const deleteProduct = useDeleteProduct({
     successMessage: "Product(s) deleted successfully",
@@ -55,40 +51,39 @@ export default function Products() {
 
   useEffect(() => {
     if (productsData) {
-      const initializedProducts = productsData.map((product: ItemProducts) => ({
-        ...product,
-      }));
-      setProducts(initializedProducts);
+      setProducts(productsData);
     }
   }, [productsData]);
-  
 
   useEffect(() => {
-    // Apply filters
-    let filteredProducts = products;
-    if (filters.category !== "All") {
-      filteredProducts = filteredProducts.filter(
-        (p) => p.category === filters.category
+    let updatedProducts = products;
+
+    if (searchQuery) {
+      updatedProducts = updatedProducts.filter((product) =>
+        Object.values(product).some((value) => 
+          String(value).toLowerCase().includes(searchQuery.toLowerCase())
+        )
       );
+    }
+
+    if (filters.category !== "All") {
+      updatedProducts = updatedProducts.filter((p) => p.category === filters.category);
     }
     if (filters.location !== "All") {
-      filteredProducts = filteredProducts.filter(
-        (p) => p.businessLocation === filters.location
-      );
+      updatedProducts = updatedProducts.filter((p) => p.businessLocation === filters.location);
     }
-    // Add more filter logic here as needed
-    setProducts(filteredProducts);
-  }, [filters]);
+    setFilteredProducts(updatedProducts);
+  }, [products, searchQuery, filters]);
 
   const handleFilterChange = (key: string, value: string | boolean) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const toggleSelectAll = () => {
-    if (selectedItems.length === products.length) {
+    if (selectedItems.length === filteredProducts.length) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(products.map((p) => p.id));
+      setSelectedItems(filteredProducts.map((p) => p.id));
     }
   };
 
@@ -123,36 +118,38 @@ export default function Products() {
     }
   };
 
-  const handleInfoClick = () => {
-    alert("This section allows you to manage your product inventory.");
-  };
-
   const handleLocationConfirm = async (location: string) => {
     for (const productId of selectedItems) {
-      const product = products.find(p => p.id === productId);
+      const product = products.find((p) => p.id === productId);
       if (product) {
         let updatedLocations: string[];
         if (modalAction === "add") {
-          updatedLocations = Array.isArray(product.businessLocation) 
+          updatedLocations = Array.isArray(product.businessLocation)
             ? [...new Set([...product.businessLocation, location])]
             : [product.businessLocation, location].filter(Boolean);
         } else {
           updatedLocations = Array.isArray(product.businessLocation)
-            ? product.businessLocation.filter(loc => loc !== location)
-            : product.businessLocation === location ? [] : [product.businessLocation];
+            ? product.businessLocation.filter((loc) => loc !== location)
+            : product.businessLocation === location
+            ? []
+            : [product.businessLocation];
         }
-        
+
         try {
           await updateProductLocation.mutateAsync({
             ProductId: productId,
             businessLocation: updatedLocations,
             existingProductData: product, // Pass the entire product object
           });
-          
+
           // Update the local state immediately
-          setProducts(prevProducts => prevProducts.map(p => 
-            p.id === productId ? { ...p, businessLocation: updatedLocations } : p
-          ));
+          setProducts((prevProducts) =>
+            prevProducts.map((p) =>
+              p.id === productId
+                ? { ...p, businessLocation: updatedLocations }
+                : p
+            )
+          );
         } catch (error) {
           console.error("Failed to update product location:", error);
         }
@@ -163,7 +160,7 @@ export default function Products() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="space-y-6">
@@ -199,8 +196,11 @@ export default function Products() {
       >
         <TableActions
           itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage} 
-          currentItems={currentItems}        />
+          setItemsPerPage={setItemsPerPage}
+          currentItems={currentItems}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
 
         <div className="border rounded-lg bg-white mt-4">
           <ProductTable
@@ -208,7 +208,10 @@ export default function Products() {
             selectedItems={selectedItems}
             toggleSelectAll={toggleSelectAll}
             toggleSelectItem={toggleSelectItem}
-            businessLocations={products.map(p => ({ id: p.id, locations: p.businessLocation }))}
+            businessLocations={products.map((p) => ({
+              id: p.id,
+              locations: p.businessLocation,
+            }))}
           />
         </div>
         <div className="flex justify-end space-x-2 p-4">
@@ -236,14 +239,14 @@ export default function Products() {
           <Button
             variant="outline"
             className="rounded-full w-8 h-8 p-0"
-            onClick={handleInfoClick}
+            onClick={() => alert("This section allows you to manage your product inventory.")}
           >
             i
           </Button>
         </div>
 
         <Paginate
-          totalCount={products.length}
+          totalCount={filteredProducts.length}
           pageSize={itemsPerPage}
           currentPage={currentPage}
           onPageChange={(page) => setCurrentPage(page)}
@@ -267,4 +270,3 @@ export default function Products() {
     </div>
   );
 }
-

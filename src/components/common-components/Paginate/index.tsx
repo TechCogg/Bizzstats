@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 interface PaginateProps {
   totalCount: number; // Total number of items
@@ -10,7 +9,12 @@ interface PaginateProps {
   onPageChange: (selectedPage: number) => void; // Callback for page changes
 }
 
-const Paginate: React.FC<PaginateProps> = ({ totalCount, pageSize, currentPage, onPageChange }) => {
+const Paginate: React.FC<PaginateProps> = ({
+  totalCount,
+  pageSize,
+  currentPage,
+  onPageChange,
+}) => {
   const pageCount = Math.ceil(totalCount / pageSize);
 
   return (
@@ -20,7 +24,9 @@ const Paginate: React.FC<PaginateProps> = ({ totalCount, pageSize, currentPage, 
         {Math.min(currentPage * pageSize, totalCount)} of {totalCount} entries
       </div>
       <ReactPaginate
-        previousLabel={<ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />}
+        previousLabel={
+          <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+        }
         nextLabel={<ChevronRightIcon className="h-5 w-5" aria-hidden="true" />}
         breakLabel="..."
         onPageChange={(data) => onPageChange(data.selected + 1)} // Adjust for 0-based index
@@ -28,11 +34,11 @@ const Paginate: React.FC<PaginateProps> = ({ totalCount, pageSize, currentPage, 
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         containerClassName="pagination flex"
-        pageClassName="px-4 py-2 border border-gray-300 text-gray-500 hover:bg-gray-100 "
         activeClassName="bg-blue-500 text-white hover:bg-blue-500"
         previousClassName="px-4 py-2 border border-gray-300 text-gray-500 hover:bg-gray-50"
         nextClassName="px-4 py-2 border border-gray-300 text-gray-500 hover:bg-gray-50"
         disabledClassName="opacity-50 cursor-not-allowed"
+        pageLinkClassName="w-10 h-10 flex items-center justify-center text-center border border-gray-300 hover:bg-gray-100"
       />
     </div>
   );
