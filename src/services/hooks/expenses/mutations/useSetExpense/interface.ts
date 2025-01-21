@@ -1,0 +1,22 @@
+export interface Expense {
+    businessLocation: string;
+    expenseCategory: string;
+    subCategory: string;
+    referenceNo: string; 
+    date: string; 
+    expenseFor: string;
+    expenseForContact?: string;
+    attachDocument?: File | null;
+    applicableTax: string; 
+    totalAmount: string;
+    expenseNote: string;
+    isRefund: boolean;
+    isRecurring: boolean;
+    recurringInterval: "Days";  
+    noOfRepetitions: string;  
+    amount: string;
+    paidOn: string;
+    paymentMethod: "Cash" | string;
+    paymentAccount: string;
+    paymentNote: string;
+  };

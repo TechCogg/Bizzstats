@@ -1,5 +1,5 @@
 import { createQueryFn, useFetchQuery } from '@/services/hooks/query';
-import {GET_PURCHASES_LIST} from '@/services/hooks/urls/products';
+import {GET_PURCHASES_LIST} from '@/services/hooks/urls/purchases';
 import { IPurchasesListRes } from './interface'; 
 
 export const GetPurchasesList = () => {

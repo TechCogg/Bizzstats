@@ -3,7 +3,28 @@
 import React, { useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
-import { Home, Users, Store, ShoppingCart, CreditCard, ClipboardList, Settings, X, LogOut, ChevronRight, Box, ArrowLeftRight, FileText, BarChart, Factory, Bell, FileSpreadsheet, Calendar, Coffee, Menu } from 'lucide-react';
+import {
+  Home,
+  Users,
+  Store,
+  ShoppingCart,
+  CreditCard,
+  ClipboardList,
+  Settings,
+  X,
+  LogOut,
+  ChevronRight,
+  Box,
+  ArrowLeftRight,
+  FileText,
+  BarChart,
+  Factory,
+  Bell,
+  FileSpreadsheet,
+  Calendar,
+  Coffee,
+  Menu,
+} from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -23,8 +44,10 @@ import AddProduct from "./tabs/Products/AddProducts";
 import Purchases from "../dashboard/tabs/Purchases";
 import Sales from "../dashboard/tabs/Sales";
 import Stock from "../dashboard/tabs/StockAdjustment";
-import Expense from "../dashboard/tabs/Expenses";
-import Production from "../dashboard/tabs/Production";
+import Expense from "../dashboard/tabs/Expenses/AllExpenses";
+import AddExpense from "../dashboard/tabs/Expenses/AddExpenses";
+import Production from "../dashboard/tabs/Production/AllProduction";
+import AddProduction from "../dashboard/tabs/Production/AddProduction";
 import Payment from "../dashboard/tabs/PaymentAccounts";
 import Reports from "../dashboard/tabs/Reports";
 import Bookings from "../dashboard/tabs/Bookings";
@@ -59,38 +82,60 @@ const Dashboard = () => {
   const menuItems = [
     { name: "Dashboard", view: "dashboard", icon: Home },
     { name: "User Management", view: "user-management", icon: Users },
-    { 
-      name: "Customers & Suppliers", 
-      view: "customers-suppliers", 
+    {
+      name: "Customers & Suppliers",
+      view: "customers-suppliers",
       icon: Store,
       hasSubmenu: true,
       submenu: [
         { name: "All Customers & Suppliers", view: "customers-suppliers" },
         { name: "Add Customer/Supplier", view: "add-customer-supplier" },
-      ]
+      ],
     },
-    { 
-      name: "Products", 
-      view: "products", 
-      icon: Box, 
+    {
+      name: "Products",
+      view: "products",
+      icon: Box,
       hasSubmenu: true,
       submenu: [
         { name: "All Products", view: "products" },
         { name: "Add Product", view: "add-product" },
-      ]
+      ],
     },
     { name: "Purchases", view: "purchases", icon: ShoppingCart },
     { name: "Sales", view: "sales", icon: BarChart },
     { name: "Stock Transfers", view: "stock-transfers", icon: ArrowLeftRight },
     { name: "Stock Adjustment", view: "stock-adjustment", icon: ClipboardList },
-    { name: "Expenses", view: "expenses", icon: FileText },
-    { name: "Production", view: "production", icon: Factory },
+    { 
+      name: "Expenses",
+       view: "expenses",
+        icon: FileText ,
+        hasSubmenu: true,
+        submenu: [
+          { name: "All Expenses", view: "expenses" },
+          { name: "Add Expenses", view: "add-expenses" },
+        ],
+      },
+    {
+      name: "Production",
+      view: "production",
+      icon: Factory,
+      hasSubmenu: true,
+      submenu: [
+        { name: "All Production", view: "production" },
+        { name: "Add Production", view: "add-production" },
+      ],
+    },
     { name: "Payment Accounts", view: "payment-accounts", icon: CreditCard },
     { name: "Reports", view: "reports", icon: FileSpreadsheet },
     { name: "Bookings", view: "bookings", icon: Calendar },
     { name: "Kitchen", view: "kitchen", icon: Coffee },
     { name: "Orders", view: "orders", icon: ClipboardList },
-    { name: "Notification Templates", view: "notification-templates", icon: Bell },
+    {
+      name: "Notification Templates",
+      view: "notification-templates",
+      icon: Bell,
+    },
     { name: "Settings", view: "settings", icon: Settings },
   ];
 
@@ -118,8 +163,12 @@ const Dashboard = () => {
         return <Stock />;
       case "expenses":
         return <Expense />;
-      case "production":
+      case "add-expenses":
+        return <AddExpense />;
+        case "production":
         return <Production />;
+      case "add-production":
+        return <AddProduction />;
       case "payment-accounts":
         return <Payment />;
       case "reports":
@@ -149,7 +198,12 @@ const Dashboard = () => {
       >
         <div className="p-4 flex justify-center">
           <Link href="/">
-          <Image src="/bizzlogo.png" alt="Bizz Stats" width={80} height={80} />
+            <Image
+              src="/bizzlogo.png"
+              alt="Bizz Stats"
+              width={80}
+              height={80}
+            />
           </Link>
         </div>
         <ScrollArea className="flex-grow">
@@ -245,4 +299,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
