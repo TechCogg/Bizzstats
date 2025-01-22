@@ -7,8 +7,7 @@ import {
 } from "../Schema/AddPaymentSchema";
 import type { FormFieldProps, PaymentFormData } from "../type/ExpenseType";
 import { UseFormReturn } from "react-hook-form";
-import QuillEditor from "@/components/common-components/QuillEditor/QuillEditor";
-import { Label } from "@radix-ui/react-label";
+
 
 const paymentFields: FormFieldProps<PaymentFormData>[] = [
   {
@@ -36,21 +35,25 @@ const paymentFields: FormFieldProps<PaymentFormData>[] = [
     type: "select",
     options: ["Person A", "Person B", "Person C", "Person D"],
   },
+  {
+    name: "paymentNote",
+    label: "Payment Note",
+    type: "textarea",
+    placeholder: "Add any additional notes",
+    required: true,
+  },
 
 ];
 
-interface TaxInformationSectionProps {
+interface PaymentInformationSectionProps {
   onFormStateChange: (methods: UseFormReturn<PaymentFormSchema>) => void;
 
-  editorContent: string;
-  setEditorContent: (content: string) => void;
 }
 
 export function PaymentInformationSection({
   onFormStateChange,
-  editorContent,
-  setEditorContent,
-}: TaxInformationSectionProps) {
+
+}: PaymentInformationSectionProps) {
   return (
     <Card
       className="p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
@@ -62,12 +65,7 @@ export function PaymentInformationSection({
           schema={paymentFormSchema}
           onFormStateChange={onFormStateChange}
         />
-        <div className="space-y-2">
-          <Label htmlFor="description" className="text-sm font-bold">
-            Payment Note:
-          </Label>
-          <QuillEditor value={editorContent} onChange={setEditorContent} />
-        </div>
+        
       </div>
     </Card>
   );

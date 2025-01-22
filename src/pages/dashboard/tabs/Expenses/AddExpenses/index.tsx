@@ -19,16 +19,14 @@ export default function AddExpenseForm() {
 
   const [paymentFormMethods, setPaymentFormMethods] =
     useState<UseFormReturn<PaymentFormSchema> | null>(null);
-  const [editorContent, setEditorContent] = useState<string>("");
 
-  const addProductionMutation = useAddExpense({
-    successMessage: "Product added successfully!",
-    errorMessage: "Failed to add product. Please try again.",
+
+  const addExpenseMutation = useAddExpense({
+    successMessage: "Expense added successfully!",
+    errorMessage: "Failed to add expense. Please try again.",
   });
 
-  const handleEditorChange = (content: string) => {
-    setEditorContent(content);
-  };
+
 
   const handleSave = async () => {
     if (expenseForm1Methods && expenseForm2Methods && paymentFormMethods) {
@@ -45,10 +43,10 @@ export default function AddExpenseForm() {
           ...expenseData1,
           ...expenseData2,
           ...paymentData,
-          description: editorContent,
+   
         } as Expense;
 
-        addProductionMutation.mutate(combinedData);
+        addExpenseMutation.mutate(combinedData);
       }
     }
   };
@@ -65,8 +63,7 @@ export default function AddExpenseForm() {
       />
       <PaymentInformationSection
         onFormStateChange={setPaymentFormMethods}
-        editorContent={editorContent}
-        setEditorContent={handleEditorChange}
+   
       />
       <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <Button
@@ -76,10 +73,10 @@ export default function AddExpenseForm() {
             !expenseForm1Methods ||
             !expenseForm2Methods ||
             !paymentFormMethods ||
-            addProductionMutation.isPending
+            addExpenseMutation.isPending
           }
         >
-          {addProductionMutation.isPending ? "Saving..." : "Save"}
+          {addExpenseMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </div>
       <Toastify />

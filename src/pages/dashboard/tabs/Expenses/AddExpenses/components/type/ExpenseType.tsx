@@ -27,7 +27,7 @@ export type PaymentFormData = {
 export interface FormFieldProps<T> {
   name: keyof T;
   label: string;
-  type: "text" | "select" | "file" | "checkbox" |"datetime";
+  type: "text" | "select" | "file" | "checkbox" |"datetime" | "textarea";
   required?: boolean;
   placeholder?: string;
   options?: string[];

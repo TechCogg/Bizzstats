@@ -42,7 +42,7 @@ import CustomerSuppliers from "../dashboard/tabs/CustomersSuppliers";
 import Products from "../dashboard/tabs/Products/AllProducts";
 import AddProduct from "./tabs/Products/AddProducts";
 import Purchases from "../dashboard/tabs/Purchases";
-import Sales from "../dashboard/tabs/Sales";
+import ImportSales from "../dashboard/tabs/Sales/ImportSales";
 import Stock from "../dashboard/tabs/StockAdjustment";
 import Expense from "../dashboard/tabs/Expenses/AllExpenses";
 import AddExpense from "../dashboard/tabs/Expenses/AddExpenses";
@@ -56,6 +56,8 @@ import Orders from "../dashboard/tabs/Orders";
 import Notification from "../dashboard/tabs/Notification Templates";
 import Setting from "../dashboard/tabs/Settings";
 import Link from "next/link";
+import AddQuotation from "./tabs/Sales/AddQuotation";
+import AllQuotation from "./tabs/Sales/AllQuotation";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -103,7 +105,17 @@ const Dashboard = () => {
       ],
     },
     { name: "Purchases", view: "purchases", icon: ShoppingCart },
-    { name: "Sales", view: "sales", icon: BarChart },
+    { 
+      name: "Sales",
+      view: "sales", 
+      icon: BarChart,
+      hasSubmenu: true,
+      submenu: [
+        { name: "Import sales", view: "import-sales" },
+        { name: "Add Quotation", view: "add-quotation" },
+        { name: "All Quotation", view: "all-quotation" },
+      ],
+    },
     { name: "Stock Transfers", view: "stock-transfers", icon: ArrowLeftRight },
     { name: "Stock Adjustment", view: "stock-adjustment", icon: ClipboardList },
     { 
@@ -155,8 +167,12 @@ const Dashboard = () => {
         return <AddProduct />;
       case "purchases":
         return <Purchases />;
-      case "sales":
-        return <Sales />;
+      case "import-sales":
+        return <ImportSales />;
+        case "add-quotation":
+        return <AddQuotation />;
+        case "all-quotation":
+        return <AllQuotation />;
       case "stock-transfers":
         return <div>Stock Transfers Component</div>; // You'll need to create this component
       case "stock-adjustment":

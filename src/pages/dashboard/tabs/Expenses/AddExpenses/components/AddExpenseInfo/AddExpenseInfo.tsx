@@ -1,6 +1,9 @@
 import React, { ChangeEvent } from "react";
 import { ReusableForm } from "@/components/common-components/Formss/ReuseableForm";
-import { expenseFormSchema,ExpenseFormSchema } from "../Schema/AddExpenseSchema";
+import {
+  expenseFormSchema,
+  ExpenseFormSchema,
+} from "../Schema/AddExpenseSchema";
 import type { FormFieldProps, ExpenseFormData } from "../type/ExpenseType";
 import { UseFormReturn } from "react-hook-form";
 const expenseFields1: FormFieldProps<ExpenseFormData>[] = [
@@ -68,7 +71,7 @@ const expenseFields1: FormFieldProps<ExpenseFormData>[] = [
     required: true,
     placeholder: "Enter total amount",
   },
-  
+
   {
     name: "isRefund",
     label: "Is Refund?",
@@ -78,14 +81,12 @@ const expenseFields1: FormFieldProps<ExpenseFormData>[] = [
   {
     name: "expenseNote",
     label: "Expense Note",
-    type: "text",
+    type: "textarea",
     placeholder: "Add any additional notes",
+    required: true,
   },
-
 ];
 const expenseFields2: FormFieldProps<ExpenseFormData>[] = [
-  
-  
   {
     name: "isRecurring",
     label: "Is Recurring?",
@@ -107,10 +108,9 @@ const expenseFields2: FormFieldProps<ExpenseFormData>[] = [
   },
 ];
 
-
 interface ExpenseInformationSectionProps {
-  onForm1StateChange: (methods: UseFormReturn<ExpenseFormSchema>) => void
-   onForm2StateChange: (methods: UseFormReturn<ExpenseFormSchema>) => void
+  onForm1StateChange: (methods: UseFormReturn<ExpenseFormSchema>) => void;
+  onForm2StateChange: (methods: UseFormReturn<ExpenseFormSchema>) => void;
 }
 
 export function ExpenseInformationSection({
@@ -119,29 +119,26 @@ export function ExpenseInformationSection({
 }: ExpenseInformationSectionProps) {
   return (
     <>
-    <div
-      className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
-      style={{ borderTop: "4px solid #2563eb" }}
-    >
-      <ReusableForm
-        fields={expenseFields1}
-        schema={expenseFormSchema}
-        onFormStateChange={onForm1StateChange}
-      />
-      
-    </div>
-     <div
-     className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
-     style={{ borderTop: "4px solid #2563eb" }}
-   >
-    <ReusableForm
-    fields={expenseFields2}
-    schema={expenseFormSchema}
-    onFormStateChange={onForm2StateChange}
-   
-  />
-  </div>
-  </>
+      <div
+        className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
+        style={{ borderTop: "4px solid #2563eb" }}
+      >
+        <ReusableForm
+          fields={expenseFields1}
+          schema={expenseFormSchema}
+          onFormStateChange={onForm1StateChange}
+        />
+      </div>
+      <div
+        className="space-y-6 p-6 bg-white rounded-lg border border-gray-200 overflow-hidden"
+        style={{ borderTop: "4px solid #2563eb" }}
+      >
+        <ReusableForm
+          fields={expenseFields2}
+          schema={expenseFormSchema}
+          onFormStateChange={onForm2StateChange}
+        />
+      </div>
+    </>
   );
 }
-
