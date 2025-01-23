@@ -1,29 +1,28 @@
 export interface IProductsListRes {
-  data: ItemProducts[]; 
+  data: ItemProducts[];
 }
 export interface ItemProducts {
-    id: string
-    alertQuantity: string;
-    applicableTax: string;
-    barcodeType: string;
-    brand: string;
-    brochureFile: string | null;
-    businessLocation: string | string[];
-    category: string;
-    description: string;
-    excTax: string;
-    exctax: string;
-    incTax: string;
-    itemCode: string;
-    manageStock: boolean;
-    margin: string;
-    productImage: string | null;
-    productName: string;
-    productType: string;
-    sellingPriceTaxType: string;
-    subCategory: string;
-    unit: string;
-  }
+  id: string;
+  productName: string;
+  itemCode: string;
+  businessLocation: string | string[];
+  alertQuantity: string;
+  barcodeType: string;
+  unit: string;
+  brand: string;
+  category: string;
+  subCategory: string;
+  productImage: string | null;
+  description: string;
+  brochureFile: string | null;
+  applicableTax: string;
+  excTax: string;
+  exctax: string;
+  incTax: string;
+  manageStock: boolean;
+  margin: string;
+  productType: string;
+  sellingPriceTaxType: string;
+}
 
-  
-  export interface IProductsListRes extends Array<ItemProducts> {}
+export interface IProductsListRes extends Array<ItemProducts> {}

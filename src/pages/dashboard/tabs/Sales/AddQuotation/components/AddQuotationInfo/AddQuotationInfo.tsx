@@ -18,6 +18,7 @@ const quotationFields: FormFieldProps<QuotationForm>[] = [
       name: "subscribe",
       label: "Subscribe?",
       type: "checkbox",
+      helperText: "This Invoice Will be automatically generated",
     },
     {
       name: "customer",
