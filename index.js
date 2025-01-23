@@ -249,7 +249,7 @@ app.use(express.json()); // Parse JSON request bodies
 app.use('/api', productRoutes);
 
 // Swagger UI route
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Start the server
 const PORT = 3000;
