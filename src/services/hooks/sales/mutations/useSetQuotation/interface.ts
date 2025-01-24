@@ -20,6 +20,7 @@ export interface Quotation {
     discountAmount: string;
     orderTax: string;
     sellNote?: string;
+    shippingDetails: string;
     shippingAddress: string;
     shippingCharges: string;
     shippingStatus: string;

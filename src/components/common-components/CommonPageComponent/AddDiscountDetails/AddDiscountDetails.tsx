@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from "react";
 import { ReusableForm } from "@/components/common-components/Formss/ReuseableForm";
 import {
-  quotationFormSchema,
-  QuotationFormSchema,
-} from "../Schema/QuotationSchema";
-import type { FormFieldProps, DiscountForm} from "../type/QuotationType";
+  discountSchema ,
+  DiscountSchema ,
+} from "./componenets/Schema";
+import type { FormFieldProps, DiscountForm} from "./componenets/type";
 import { UseFormReturn } from "react-hook-form";
 const discountFields: FormFieldProps<DiscountForm>[] = [
     {
@@ -39,7 +39,7 @@ const discountFields: FormFieldProps<DiscountForm>[] = [
   
 
 interface DiscountSectionProps {
-  onFormStateChange: (methods: UseFormReturn< QuotationFormSchema>) => void;
+  onFormStateChange: (methods: UseFormReturn< DiscountSchema >) => void;
 
 }
 
@@ -55,7 +55,7 @@ export function DiscountSection({
       >
         <ReusableForm
           fields={discountFields}
-          schema={quotationFormSchema }
+          schema={discountSchema  }
           onFormStateChange={onFormStateChange}
         />
       </div>

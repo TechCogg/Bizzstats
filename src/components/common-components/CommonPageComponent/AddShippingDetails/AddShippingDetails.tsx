@@ -1,12 +1,19 @@
 import React, { ChangeEvent } from "react";
 import { ReusableForm } from "@/components/common-components/Formss/ReuseableForm";
 import {
-  quotationFormSchema,
-  QuotationFormSchema,
-} from "../Schema/QuotationSchema";
-import type { FormFieldProps, ShippingForm} from "../type/QuotationType";
+  shippingSchema,
+  ShippingSchema,
+} from "./componenets/Schema";
+import type { FormFieldProps, ShippingForm} from "./componenets/type";
 import { UseFormReturn } from "react-hook-form";
 const shippingFields: FormFieldProps<ShippingForm>[] = [
+  {
+    name: "shippingDetails",
+    label: "Shipping Details",
+    type: "textarea",
+    required: true,
+    placeholder: "Enter shipping details",
+  },
     {
       name: "shippingAddress",
       label: "Shipping Address",
@@ -50,7 +57,7 @@ const shippingFields: FormFieldProps<ShippingForm>[] = [
   ];
   
 interface ShippingSectionProps {
-  onFormStateChange: (methods: UseFormReturn< QuotationFormSchema>) => void;
+  onFormStateChange: (methods: UseFormReturn< ShippingSchema>) => void;
 
 }
 
@@ -66,7 +73,7 @@ export function ShippingSection({
       >
         <ReusableForm
           fields={shippingFields}
-          schema={quotationFormSchema }
+          schema={shippingSchema }
           onFormStateChange={onFormStateChange}
         />
       </div>

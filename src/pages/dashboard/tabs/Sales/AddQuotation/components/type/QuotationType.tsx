@@ -21,29 +21,6 @@ export interface ProductItemForm {
 }
 
 
-export interface DiscountForm {
-  discountType: string;
-  discountAmount: string;
-  orderTax: string;
-  sellNote?: string;
-
-}
-
-
-export interface ShippingForm {
-  shippingAddress: string;
-  shippingCharges: string;
-  shippingStatus: string;
-  deliveredTo: string;
-  deliveryPerson?: string;
-  shippingDocument?: File | null;
-}
-
-export interface AdditionalExpense {
-  expenseName: string;
-  amount: string;
-}
-
 
 export interface FormFieldProps<T> {
   name: keyof T;
