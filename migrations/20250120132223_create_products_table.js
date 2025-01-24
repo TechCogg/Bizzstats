@@ -6,14 +6,14 @@ exports.up = function (knex) {
         table.string('businessLocation'); // Business location
         table.integer('alertQuantity'); // Alert quantity
         table.string('barcodeType'); // Barcode type
-        table.string('unit'); // Unit
-        table.string('brand')
-        table.string('category')
-        table.integer('subCategory')
-        table.string('productImage'); // Product image file path
+        table.string('unit'); // Unit of measurement
+        table.string('brand'); // Product brand
+        table.string('category'); // Product category
+        table.integer('subCategory'); // Subcategory ID (if applicable)
         table.text('description'); // Product description
-        table.string('brochureFile'); // Brochure file path
-        // table.timestamps(true, true); // Timestamps (created_at and updated_at)
+        table.text('productImage'); // Base64-encoded product image
+        table.text('brochureFile'); // Base64-encoded brochure file (PDF)
+        table.timestamps(true, true); // Timestamps (created_at, updated_at)
     });
 };
 

@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const multer = require('multer');
 
+
+// Configure Multer for file uploads
+const upload = multer({ dest: 'uploads/' }); // Temporary folder to store files
 /**
  * @swagger
  * /api/products:
@@ -25,7 +29,8 @@ const productController = require('../controllers/productController');
  *       201:
  *         description: Product created successfully
  */
-router.post('/products', productController.createProduct); // Create a product
+// Routes
+router.post('/products', upload.single('productImage'), productController.createProduct);
 
 /**
  * @swagger
