@@ -2,31 +2,34 @@
 
 import React, { useState, useEffect } from "react"
 import type { UseFormReturn } from "react-hook-form"
-import { QuotationInformationSection } from "./components/AddQuotationInfo/AddQuotationInfo"
+import { SalesInformationSection } from "./components/AddSalesInfo/AddSaleInfo"
 import { ProductSearch } from "@/components/common-components/CommonPageComponent/AddSearchPrduct/AddSearchPrduct"
 import { DiscountSection } from "@/components/common-components/CommonPageComponent/AddDiscountDetails/AddDiscountDetails"
 import { ShippingSection } from "@/components/common-components/CommonPageComponent/AddShippingDetails/AddShippingDetails"
+import { PaymentInformationSection } from "@/components/common-components/CommonPageComponent/AddPaymentDetails/AddPaymentDetails";
 import { Button } from "@/components/ui/button"
-import type { QuotationFormSchema } from "./components/Schema/QuotationSchema"
+import type { SalesFormSchema } from "./components/Schema/SalesSchema"
 import type { ShippingSchema } from "@/components/common-components/CommonPageComponent/AddShippingDetails/componenets/Schema"
 import type { DiscountSchema } from "@/components/common-components/CommonPageComponent/AddDiscountDetails/componenets/Schema"
-import { useAddQuotation } from "@/services/hooks/sales/mutations/useSetQuotation"
-import type { Quotation } from "@/services/hooks/sales/mutations/useSetQuotation/interface"
+import { PaymentFormSchema } from "@/components/common-components/CommonPageComponent/AddPaymentDetails/components/Schema";
+import { useAddSale } from "@/services/hooks/sales/mutations/useSetSale"
+import type { Sale} from "@/services/hooks/sales/mutations/useSetSale/interface"
 import { Toastify } from "@/components/common-components/Toastify/Toastify"
 
-export default function AddQuotationForm() {
-  const [quotationFormMethods, setQuotationFormMethods] = useState<UseFormReturn<QuotationFormSchema> | null>(null)
+export default function AddSaleForm() {
+  const [salesFormMethods, setSalesFormMethods] = useState<UseFormReturn<SalesFormSchema> | null>(null)
   const [discountFormMethods, setDiscountFormMethods] = useState<UseFormReturn<DiscountSchema> | null>(null)
   const [shippingFormMethods, setShippingFormMethods] = useState<UseFormReturn<ShippingSchema> | null>(null)
+  const [paymentFormMethods, setPaymentFormMethods] = useState<UseFormReturn<PaymentFormSchema> | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
   const [discountAmount, setDiscountAmount] = useState(0)
   const [shippingCost, setShippingCost] = useState(0)
   const [payableAmount, setPayableAmount] = useState(0)
 
-  const addQuotationMutation = useAddQuotation({
-    successMessage: "Quotation added successfully!",
-    errorMessage: "Failed to add quotation. Please try again.",
+  const addSaleMutation = useAddSale({
+    successMessage: "Sale added successfully!",
+    errorMessage: "Failed to add sale. Please try again.",
   })
 
   const handleProductsChange = (products: any[]) => {
@@ -70,27 +73,30 @@ export default function AddQuotationForm() {
   }, [totalAmount, discountAmount, shippingCost])
 
   const handleSave = async () => {
-    if (quotationFormMethods && discountFormMethods && shippingFormMethods) {
-      const isQuotationFormValid = await quotationFormMethods.trigger()
+    if (salesFormMethods && discountFormMethods && shippingFormMethods && paymentFormMethods) {
+      const isSaleFormValid = await salesFormMethods.trigger()
       const isDiscountFormValid = await discountFormMethods.trigger()
       const isShippingFormValid = await shippingFormMethods.trigger()
+      const isPaymentFormValid = await paymentFormMethods.trigger();
 
-      if (isQuotationFormValid && isDiscountFormValid && isShippingFormValid) {
-        const quotationData = quotationFormMethods.getValues()
+      if (isSaleFormValid && isDiscountFormValid && isShippingFormValid && isPaymentFormValid) {
+        const saleData = salesFormMethods.getValues()
         const discountData = discountFormMethods.getValues()
         const shippingData = shippingFormMethods.getValues()
-        const combinedData: Quotation = {
-          ...quotationData,
+        const paymentData = paymentFormMethods.getValues();
+        const combinedData: Sale= {
+          ...saleData,
           ...discountData,
           ...shippingData,
+          ...paymentData,
           products: selectedProducts,
           subtotal: totalAmount.toString(),
           discountAmount: discountAmount.toString(),
           shippingCharges: shippingCost.toString(),
           amount: payableAmount.toString(),
-        } as Quotation
+        } as Sale
 
-        addQuotationMutation.mutate(combinedData)
+        addSaleMutation.mutate(combinedData)
       }
     }
   }
@@ -98,13 +104,14 @@ export default function AddQuotationForm() {
   return (
     <div className="space-y-6">
       <div className="pb-2">
-        <h1 className="text-xl font-semibold">Add Quotation</h1>
+        <h1 className="text-xl font-semibold">Add Sale</h1>
       </div>
 
-      <QuotationInformationSection onFormStateChange={setQuotationFormMethods} />
+      <SalesInformationSection onFormStateChange={setSalesFormMethods} />
       <ProductSearch onProductsChange={handleProductsChange} />
       <DiscountSection onFormStateChange={setDiscountFormMethods} />
       <ShippingSection onFormStateChange={setShippingFormMethods} />
+       <PaymentInformationSection onFormStateChange={setPaymentFormMethods}/>
 
       <div className="bg-gray-100 p-4 rounded-md">
         <h2 className="text-lg font-semibold mb-2">Summary</h2>
@@ -121,14 +128,15 @@ export default function AddQuotationForm() {
           onClick={handleSave}
           className="bg-blue-500 text-white hover:bg-blue-600"
           disabled={
-            !quotationFormMethods ||
+            !salesFormMethods ||
             !discountFormMethods ||
             !shippingFormMethods ||
+            !paymentFormMethods ||
             selectedProducts.length === 0 ||
-            addQuotationMutation.isPending
+            addSaleMutation.isPending
           }
         >
-          {addQuotationMutation.isPending ? "Saving..." : "Save"}
+          {addSaleMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </div>
       <Toastify />

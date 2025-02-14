@@ -10,32 +10,35 @@ import {
 } from "@/components/ui/select";
 import { Columns } from "lucide-react";
 import { DataExport } from "@/components/common-components/DataExport/DataExport";
-import { ItemPurchases } from "@/services/hooks/purchases/quries/useGetPurchases/interface";
-const columnLabels: Record<keyof ItemPurchases, string> = {
-  date: "Date",
-  referenceNo: "Reference Number",
-  businessLocation: "Business Location",
-  supplier: "Supplier",
-  purchaseStatus: "Purchase Status",
-  paymentStatus: "Payment Status",
-  grandTotal: "Grand Total",
-  paymentDue: "Payment Due",
-  addedBy: "Added By",
-  id: ""
-};
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 interface ControlsSectionProps<T> {
   itemsPerPage: number;
   setItemsPerPage: (value: number) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  currentItems: ItemPurchases[];
+  currentItems: T[];
+  columns: { key: string; label: string }[];
+  visibleColumns: string[];
+  setVisibleColumns: (columns: string[]) => void;
+  columnLabels: Record<string, string>;
 }
+
 export function ControlsSection<T>({
   itemsPerPage,
   setItemsPerPage,
   searchQuery,
   setSearchQuery,
   currentItems,
+  columns,
+  visibleColumns,
+  setVisibleColumns,
+  columnLabels,
 }: ControlsSectionProps<T>) {
   return (
     <div className="flex flex-wrap gap-4 mb-6 items-center">
@@ -65,16 +68,39 @@ export function ControlsSection<T>({
       />
 
       <div className="flex gap-2 ml-auto">
-        <DataExport<ItemPurchases>
+        <DataExport<T>
           data={currentItems}
-          filename="purchases"
-          columnLabels={columnLabels}
+          filename="data-export"
+          columnLabels={columnLabels as Record<keyof T, string>}
         />
 
-        <Button variant="outline" size="sm">
-          <Columns className="h-4 w-4 mr-2" />
-          Column Visibility
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Columns className="h-4 w-4 mr-2" />
+              Column Visibility
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {columns.map((column) => (
+              <DropdownMenuCheckboxItem
+                key={column.key}
+                checked={visibleColumns.includes(column.key)}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    setVisibleColumns([...visibleColumns, column.key]);
+                  } else {
+                    setVisibleColumns(
+                      visibleColumns.filter((col) => col !== column.key)
+                    );
+                  }
+                }}
+              >
+                {column.label}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

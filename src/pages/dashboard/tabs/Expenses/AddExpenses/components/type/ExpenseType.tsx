@@ -16,14 +16,6 @@ export interface ExpenseFormData {
   noOfRepetitions: number;
 }
 
-export type PaymentFormData = {
-  amount: string;
-  paidOn: string;
-  paymentMethod:string;
-  paymentAccount: string;
-  paymentNote: string;
-};
-
 export interface FormFieldProps<T> {
   name: keyof T;
   label: string;

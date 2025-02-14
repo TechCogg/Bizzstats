@@ -58,6 +58,14 @@ import Setting from "../dashboard/tabs/Settings";
 import Link from "next/link";
 import AddQuotation from "./tabs/Sales/AddQuotation";
 import AllQuotation from "./tabs/Sales/AllQuotation";
+import AddGdn from "./tabs/Sales/AddGdn";
+import AllGdn from "./tabs/Sales/AllGdn";
+import AddDraft from "./tabs/Sales/AddDraft";
+import AllDraft from "./tabs/Sales/AllDraft";
+import AddSales from "./tabs/Sales/AddSales";
+import AllSales from "./tabs/Sales/AllSales";
+import AddGop from "./tabs/Sales/AddGop";
+import AllGop from "./tabs/Sales/AllGop";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -105,29 +113,37 @@ const Dashboard = () => {
       ],
     },
     { name: "Purchases", view: "purchases", icon: ShoppingCart },
-    { 
+    {
       name: "Sales",
-      view: "sales", 
+      view: "sales",
       icon: BarChart,
       hasSubmenu: true,
       submenu: [
         { name: "Import sales", view: "import-sales" },
         { name: "Add Quotation", view: "add-quotation" },
         { name: "All Quotation", view: "all-quotation" },
+        { name: "Add GDN", view: "add-gdn" },
+        { name: "All GDN", view: "all-gdn" },
+        { name: "Add Draft", view: "add-draft" },
+        { name: "All Draft", view: "all-draft" },
+        { name: "Add Sale", view: "add-sale" },
+        { name: "All Sale", view: "all-sale" },
+        { name: "Add Gate Out Pass", view: "add-gop" },
+        { name: "All Gate Out Pass", view: "all-gop" },
       ],
     },
     { name: "Stock Transfers", view: "stock-transfers", icon: ArrowLeftRight },
     { name: "Stock Adjustment", view: "stock-adjustment", icon: ClipboardList },
-    { 
+    {
       name: "Expenses",
-       view: "expenses",
-        icon: FileText ,
-        hasSubmenu: true,
-        submenu: [
-          { name: "All Expenses", view: "expenses" },
-          { name: "Add Expenses", view: "add-expenses" },
-        ],
-      },
+      view: "expenses",
+      icon: FileText,
+      hasSubmenu: true,
+      submenu: [
+        { name: "All Expenses", view: "expenses" },
+        { name: "Add Expenses", view: "add-expenses" },
+      ],
+    },
     {
       name: "Production",
       view: "production",
@@ -169,10 +185,26 @@ const Dashboard = () => {
         return <Purchases />;
       case "import-sales":
         return <ImportSales />;
-        case "add-quotation":
+      case "add-quotation":
         return <AddQuotation />;
-        case "all-quotation":
+      case "all-quotation":
         return <AllQuotation />;
+      case "add-gdn":
+        return <AddGdn />;
+      case "all-gdn":
+        return <AllGdn />;
+      case "add-draft":
+        return <AddDraft />;
+      case "all-draft":
+        return <AllDraft />;
+      case "add-sale":
+        return <AddSales />;
+      case "all-sale":
+        return <AllSales />;
+      case "add-gop":
+        return <AddGop />;
+      case "all-gop":
+        return <AllGop />;
       case "stock-transfers":
         return <div>Stock Transfers Component</div>; // You'll need to create this component
       case "stock-adjustment":
@@ -181,7 +213,7 @@ const Dashboard = () => {
         return <Expense />;
       case "add-expenses":
         return <AddExpense />;
-        case "production":
+      case "production":
         return <Production />;
       case "add-production":
         return <AddProduction />;

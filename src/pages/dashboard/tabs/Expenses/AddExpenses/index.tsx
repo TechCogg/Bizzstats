@@ -3,10 +3,10 @@
 import React, { useState, ChangeEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { ExpenseInformationSection } from "./components/AddExpenseInfo/AddExpenseInfo";
-import { PaymentInformationSection } from "./components/AddPaymentInfo/AddPaymentInfo";
+import { PaymentInformationSection } from "@/components/common-components/CommonPageComponent/AddPaymentDetails/AddPaymentDetails";
 import { Button } from "@/components/ui/button";
 import { ExpenseFormSchema } from "./components/Schema/AddExpenseSchema";
-import { PaymentFormSchema } from "./components/Schema/AddPaymentSchema";
+import { PaymentFormSchema } from "@/components/common-components/CommonPageComponent/AddPaymentDetails/components/Schema";
 import { useAddExpense } from "@/services/hooks/expenses/mutations/useSetExpense";
 import { Expense } from "@/services/hooks/expenses/mutations/useSetExpense/interface";
 import { Toastify } from "@/components/common-components/Toastify/Toastify";

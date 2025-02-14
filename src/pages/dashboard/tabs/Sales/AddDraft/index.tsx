@@ -2,20 +2,20 @@
 
 import React, { useState, useEffect } from "react"
 import type { UseFormReturn } from "react-hook-form"
-import { QuotationInformationSection } from "./components/AddQuotationInfo/AddQuotationInfo"
+import { DraftInformationSection } from "./components/AddDraftInfo/AddDraftInfo"
 import { ProductSearch } from "@/components/common-components/CommonPageComponent/AddSearchPrduct/AddSearchPrduct"
 import { DiscountSection } from "@/components/common-components/CommonPageComponent/AddDiscountDetails/AddDiscountDetails"
 import { ShippingSection } from "@/components/common-components/CommonPageComponent/AddShippingDetails/AddShippingDetails"
 import { Button } from "@/components/ui/button"
-import type { QuotationFormSchema } from "./components/Schema/QuotationSchema"
+import type { DraftFormSchema } from "./components/Schema/DraftSchema"
 import type { ShippingSchema } from "@/components/common-components/CommonPageComponent/AddShippingDetails/componenets/Schema"
 import type { DiscountSchema } from "@/components/common-components/CommonPageComponent/AddDiscountDetails/componenets/Schema"
-import { useAddQuotation } from "@/services/hooks/sales/mutations/useSetQuotation"
-import type { Quotation } from "@/services/hooks/sales/mutations/useSetQuotation/interface"
+import { useAddDraft } from "@/services/hooks/sales/mutations/useSetDraft"
+import type { Draft } from "@/services/hooks/sales/mutations/useSetDraft/interface"
 import { Toastify } from "@/components/common-components/Toastify/Toastify"
 
-export default function AddQuotationForm() {
-  const [quotationFormMethods, setQuotationFormMethods] = useState<UseFormReturn<QuotationFormSchema> | null>(null)
+export default function AddDraftForm() {
+  const [draftFormMethods, setDraftFormMethods] = useState<UseFormReturn<DraftFormSchema> | null>(null)
   const [discountFormMethods, setDiscountFormMethods] = useState<UseFormReturn<DiscountSchema> | null>(null)
   const [shippingFormMethods, setShippingFormMethods] = useState<UseFormReturn<ShippingSchema> | null>(null)
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
@@ -24,9 +24,9 @@ export default function AddQuotationForm() {
   const [shippingCost, setShippingCost] = useState(0)
   const [payableAmount, setPayableAmount] = useState(0)
 
-  const addQuotationMutation = useAddQuotation({
-    successMessage: "Quotation added successfully!",
-    errorMessage: "Failed to add quotation. Please try again.",
+  const addDraftMutation = useAddDraft({
+    successMessage: "Draft added successfully!",
+    errorMessage: "Failed to add draft. Please try again.",
   })
 
   const handleProductsChange = (products: any[]) => {
@@ -70,17 +70,17 @@ export default function AddQuotationForm() {
   }, [totalAmount, discountAmount, shippingCost])
 
   const handleSave = async () => {
-    if (quotationFormMethods && discountFormMethods && shippingFormMethods) {
-      const isQuotationFormValid = await quotationFormMethods.trigger()
+    if (draftFormMethods && discountFormMethods && shippingFormMethods) {
+      const isDraftFormValid = await draftFormMethods.trigger()
       const isDiscountFormValid = await discountFormMethods.trigger()
       const isShippingFormValid = await shippingFormMethods.trigger()
 
-      if (isQuotationFormValid && isDiscountFormValid && isShippingFormValid) {
-        const quotationData = quotationFormMethods.getValues()
+      if (isDraftFormValid && isDiscountFormValid && isShippingFormValid) {
+        const draftData = draftFormMethods.getValues()
         const discountData = discountFormMethods.getValues()
         const shippingData = shippingFormMethods.getValues()
-        const combinedData: Quotation = {
-          ...quotationData,
+        const combinedData: Draft = {
+          ...draftData,
           ...discountData,
           ...shippingData,
           products: selectedProducts,
@@ -88,9 +88,9 @@ export default function AddQuotationForm() {
           discountAmount: discountAmount.toString(),
           shippingCharges: shippingCost.toString(),
           amount: payableAmount.toString(),
-        } as Quotation
+        } as Draft
 
-        addQuotationMutation.mutate(combinedData)
+        addDraftMutation.mutate(combinedData)
       }
     }
   }
@@ -98,16 +98,16 @@ export default function AddQuotationForm() {
   return (
     <div className="space-y-6">
       <div className="pb-2">
-        <h1 className="text-xl font-semibold">Add Quotation</h1>
+        <h1 className="text-xl font-semibold">Add Draft</h1>
       </div>
 
-      <QuotationInformationSection onFormStateChange={setQuotationFormMethods} />
+      <DraftInformationSection onFormStateChange={setDraftFormMethods} />
       <ProductSearch onProductsChange={handleProductsChange} />
       <DiscountSection onFormStateChange={setDiscountFormMethods} />
       <ShippingSection onFormStateChange={setShippingFormMethods} />
 
       <div className="bg-gray-100 p-4 rounded-md">
-        <h2 className="text-lg font-semibold mb-2">Summary</h2>
+        <h2 className="text-lg font-semibold mb-2">Summary</h2> 
         <div className="space-y-2">
           <div>Subtotal: ${totalAmount.toFixed(2)}</div>
           <div>Discount: ${discountAmount.toFixed(2)}</div>
@@ -121,14 +121,14 @@ export default function AddQuotationForm() {
           onClick={handleSave}
           className="bg-blue-500 text-white hover:bg-blue-600"
           disabled={
-            !quotationFormMethods ||
+            !draftFormMethods ||
             !discountFormMethods ||
             !shippingFormMethods ||
             selectedProducts.length === 0 ||
-            addQuotationMutation.isPending
+            addDraftMutation.isPending
           }
         >
-          {addQuotationMutation.isPending ? "Saving..." : "Save"}
+          {addDraftMutation.isPending ? "Saving..." : "Save"}
         </Button>
       </div>
       <Toastify />

@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
 
 // Add a response interceptor
 api.interceptors.response.use((response) => {
-  return response;
+  return response;    
 }, (error) => {
   // Handle global errors here (e.g., logout on 401)
   if (error.response && error.response.status === 401) {

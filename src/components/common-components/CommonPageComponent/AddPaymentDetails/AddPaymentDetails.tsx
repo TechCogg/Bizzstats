@@ -4,8 +4,8 @@ import { ReusableForm } from "@/components/common-components/Formss/ReuseableFor
 import {
   PaymentFormSchema,
   paymentFormSchema,
-} from "../Schema/AddPaymentSchema";
-import type { FormFieldProps, PaymentFormData } from "../type/ExpenseType";
+} from "./components/Schema";
+import type { FormFieldProps, PaymentFormData } from "./components/type";
 import { UseFormReturn } from "react-hook-form";
 
 
